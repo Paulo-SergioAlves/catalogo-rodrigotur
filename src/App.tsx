@@ -85,13 +85,14 @@ function Mascot({ size = 64, variant = 1, flip }: { size?: number; variant?: 1 |
 
 /* ─── Button ─────────────────────────────────────────────── */
 function Btn({
-  children, variant = "primary", href, onClick, small,
+  children, variant = "primary", href, onClick, small, block,
 }: {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   href?: string;
   onClick?: () => void;
   small?: boolean;
+  block?: boolean;
 }) {
   const vs: Record<string, React.CSSProperties> = {
     primary:   { background: ORANGE, color: NAVY,  boxShadow: "0 4px 18px rgba(249,115,22,0.45)" },
@@ -100,13 +101,18 @@ function Btn({
     ghost:     { background: "transparent", color: NAVY, textDecoration: "underline" },
   };
   const base: React.CSSProperties = {
-    display: "inline-flex", alignItems: "center", gap: 8,
+    display: block ? "flex" : "inline-flex",
+    width: block ? "100%" : undefined,
+    alignItems: "center",
+    justifyContent: block ? "center" : undefined,
+    gap: 8,
     fontWeight: 700, fontFamily: "inherit", cursor: "pointer",
     transition: "opacity .15s, transform .15s",
     borderRadius: small ? 10 : 14,
-    padding: small ? "9px 18px" : "15px 26px",
-    fontSize: small ? "0.85rem" : "1rem",
+    padding: small ? "9px 18px" : "15px 20px",
+    fontSize: small ? "0.85rem" : "0.95rem",
     border: "none", textDecoration: "none",
+    whiteSpace: "nowrap",
     ...vs[variant],
   };
   const hover = (e: React.MouseEvent<HTMLElement>, on: boolean) => {
@@ -120,6 +126,17 @@ function Btn({
   return <button style={base} onClick={onClick} onMouseEnter={e => hover(e, true)} onMouseLeave={e => hover(e, false)}>{children}</button>;
 }
 
+/* ─── Section CTA ────────────────────────────────────────── */
+function SectionCTA({ label, href }: { label: string; href: string }) {
+  return (
+    <div style={{ textAlign: "center", marginTop: 52 }}>
+      <Btn href={href} variant="primary">
+        <WhatsAppIcon />{label}
+      </Btn>
+    </div>
+  );
+}
+
 /* ─── Section primitives ─────────────────────────────────── */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -131,7 +148,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 function SectionHeading({ children, light }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <h2 style={{ fontFamily: "Fraunces, Georgia, serif", color: light ? "white" : NAVY, fontSize: "clamp(1.9rem, 4vw, 3rem)", fontWeight: 600, lineHeight: 1.15 }}>
+    <h2 style={{ fontFamily: "Fraunces, Georgia, serif", color: light ? "white" : NAVY, fontSize: "clamp(1.7rem, 4vw, 2.9rem)", fontWeight: 600, lineHeight: 1.18 }}>
       {children}
     </h2>
   );
@@ -140,7 +157,11 @@ function SectionHeading({ children, light }: { children: React.ReactNode; light?
 /* ─── Flight decoration ──────────────────────────────────── */
 function FlightPath() {
   return (
-    <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1200 600" fill="none" preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.06 }}>
+    <svg
+      aria-hidden="true"
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.06, overflow: "hidden" }}
+      viewBox="0 0 1200 600" fill="none" preserveAspectRatio="xMidYMid slice"
+    >
       <path d="M-100,400 C200,280 450,180 700,220 C900,255 1050,140 1300,90" stroke="white" strokeWidth="1.5" strokeDasharray="9 7" />
       <path d="M0,200 C180,195 380,330 650,300 C900,270 1080,370 1400,330" stroke="white" strokeWidth="1" strokeDasharray="6 10" />
     </svg>
@@ -195,10 +216,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Close drawer when switching to desktop
   useEffect(() => { if (!isMobile) setOpen(false); }, [isMobile]);
-
-  // Prevent body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -222,18 +240,18 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           display: "flex", alignItems: "center", justifyContent: "space-between",
           overflow: "hidden",
         }}>
-          {/* Brand — always visible */}
+          {/* Brand */}
           <a href="#inicio" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
-            <Logo size={isMobile ? 36 : 42} />
+            <Logo size={isMobile ? 34 : 42} />
             <div>
-              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: isMobile ? "1rem" : "1.15rem", fontWeight: 700, lineHeight: 1 }}>
+              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: isMobile ? "0.95rem" : "1.15rem", fontWeight: 700, lineHeight: 1 }}>
                 RODRIGO<span style={{ color: ORANGE }}>TUR</span>
               </div>
-              <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Agência de Viagens</div>
+              <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.58rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Agência de Viagens</div>
             </div>
           </a>
 
-          {/* Desktop: horizontal nav + CTA */}
+          {/* Desktop nav */}
           {!isMobile && (
             <>
               <nav style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -248,7 +266,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
             </>
           )}
 
-          {/* Mobile: hamburger button only */}
+          {/* Mobile hamburger */}
           {isMobile && (
             <button
               onClick={() => setOpen(v => !v)}
@@ -261,18 +279,17 @@ function Nav({ scrolled }: { scrolled: boolean }) {
         </div>
       </header>
 
-      {/* Mobile full-screen overlay drawer */}
+      {/* Overlay */}
       {isMobile && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 99,
-          background: "rgba(7,18,38,0.55)",
-          backdropFilter: "blur(3px)",
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? "auto" : "none",
+          background: "rgba(7,18,38,0.55)", backdropFilter: "blur(3px)",
+          opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none",
           transition: "opacity .25s",
         }} onClick={() => setOpen(false)} />
       )}
 
+      {/* Drawer */}
       {isMobile && (
         <div style={{
           position: "fixed", top: 60, right: 0, bottom: 0, zIndex: 100,
@@ -286,7 +303,6 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           overflowY: "auto",
           boxShadow: "-12px 0 48px rgba(0,0,0,0.4)",
         }}>
-          {/* Close button row */}
           <div style={{ display: "flex", justifyContent: "flex-end", padding: "8px 16px 4px" }}>
             <button onClick={() => setOpen(false)} aria-label="Fechar menu"
               style={{ color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "none", borderRadius: 8, cursor: "pointer", padding: "8px 10px", display: "flex" }}>
@@ -294,7 +310,6 @@ function Nav({ scrolled }: { scrolled: boolean }) {
             </button>
           </div>
 
-          {/* Nav links */}
           <nav style={{ flex: 1, display: "flex", flexDirection: "column", padding: "8px 0" }}>
             {NAV.map((n, i) => (
               <a key={n.href} href={n.href}
@@ -309,15 +324,14 @@ function Nav({ scrolled }: { scrolled: boolean }) {
                   transition: "color .15s, background .15s",
                   minHeight: 56,
                 }}
-                onMouseEnter={e => { (e.currentTarget).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget).style.color = "white"; }}
-                onMouseLeave={e => { (e.currentTarget).style.background = "transparent"; (e.currentTarget).style.color = "rgba(255,255,255,0.85)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "white"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
               >
                 {n.label}
               </a>
             ))}
           </nav>
 
-          {/* WhatsApp CTA */}
           <div style={{ padding: "20px 24px 0" }}>
             <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
               onClick={() => setOpen(false)}
@@ -332,71 +346,110 @@ function Nav({ scrolled }: { scrolled: boolean }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────── */
+const HERO_DIFFS = [
+  "Atendimento online todos os dias",
+  "Atendimento presencial aos sábados",
+  "Agência cadastrada no Cadastur",
+  "Atendimento humano e personalizado",
+];
+
 function Hero() {
   const isMobile = useIsMobile();
+  const isVerySmall = useIsMobile(360);
+
   return (
     <section id="inicio" style={{ background: NAVY, minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}>
-      {/* BG photo */}
       <div style={{ position: "absolute", inset: 0 }}>
         <img src={IMG_HERO} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, rgba(13,27,62,0.55) 0%, rgba(13,27,62,0.88) 70%, ${NAVY} 100%)` }} />
       </div>
       <FlightPath />
 
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "120px 24px 80px", width: "100%" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 48, alignItems: "center" }}>
-          {/* Left */}
-          <div style={{ maxWidth: 620 }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "96px 20px 60px" : "120px 24px 80px", width: "100%" }}>
+
+        {/* ── Mobile: single centered column ── */}
+        {isMobile && (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
             {/* Badge */}
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 28 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 22 }}>
               <PlaneIcon />
-              <span style={{ color: ORANGE, fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Passagens Aéreas · Queimadas/PB</span>
+              <span style={{ color: ORANGE, fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Passagens Aéreas · Queimadas/PB</span>
             </div>
 
-            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(2.2rem, 5vw, 3.6rem)", lineHeight: 1.12, fontWeight: 600, marginBottom: 20 }}>
+            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.75rem, 7.5vw, 2.8rem)", lineHeight: 1.15, fontWeight: 600, marginBottom: 16 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de Rodrigo.Tur!</em>
             </h1>
 
-            <p style={{ color: "rgba(255,255,255,0.68)", fontSize: "1.08rem", lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
+            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem", lineHeight: 1.75, marginBottom: 28, maxWidth: 420 }}>
               {CONTENT.subtitulo}
             </p>
 
-            {/* Buttons */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-              <Btn href={CONTENT.whatsapp} variant="primary">
+            {/* Buttons: 2-col ≥360px, 1-col below */}
+            <div style={{ display: "grid", gridTemplateColumns: isVerySmall ? "1fr" : "1fr 1fr", gap: 12, width: "100%", maxWidth: 440 }}>
+              <Btn href={CONTENT.whatsapp} variant="primary" block>
                 <WhatsAppIcon />Falar no WhatsApp
               </Btn>
-              <Btn href="#servicos" variant="secondary">
+              <Btn href="#servicos" variant="secondary" block>
                 Planejar minha viagem
               </Btn>
             </div>
 
-            {/* Stats */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 36, marginTop: 48, paddingTop: 36, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-              {[
-                { v: "Todos os dias", l: "Atendimento online" },
-                { v: "Sábados",       l: "Atendimento presencial" },
-                { v: "Cadastur",      l: "Agência certificada" },
-              ].map(s => (
-                <div key={s.l}>
-                  <div style={{ fontFamily: "Fraunces, Georgia, serif", color: ORANGE, fontSize: "1.1rem", fontWeight: 600 }}>{s.v}</div>
-                  <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.78rem", marginTop: 2 }}>{s.l}</div>
+            {/* 4 differentials */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 16px", marginTop: 32, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.08)", width: "100%", maxWidth: 440 }}>
+              {HERO_DIFFS.map(d => (
+                <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7, textAlign: "left" }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 4 }} />
+                  <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", lineHeight: 1.4 }}>{d}</span>
                 </div>
               ))}
             </div>
           </div>
+        )}
 
-          {/* Right – mascot */}
-          {!isMobile && (
-            <div style={{ flexDirection: "column", alignItems: "center", gap: 16, display: "flex" }}>
+        {/* ── Desktop: 2-column layout ── */}
+        {!isMobile && (
+          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 48, alignItems: "center" }}>
+            <div style={{ maxWidth: 620 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 28 }}>
+                <PlaneIcon />
+                <span style={{ color: ORANGE, fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Passagens Aéreas · Queimadas/PB</span>
+              </div>
+
+              <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", lineHeight: 1.12, fontWeight: 600, marginBottom: 20 }}>
+                Viaje com confiança,{" "}
+                <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de Rodrigo.Tur!</em>
+              </h1>
+
+              <p style={{ color: "rgba(255,255,255,0.68)", fontSize: "1.08rem", lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
+                {CONTENT.subtitulo}
+              </p>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+                <Btn href={CONTENT.whatsapp} variant="primary"><WhatsAppIcon />Falar no WhatsApp</Btn>
+                <Btn href="#servicos" variant="secondary">Planejar minha viagem</Btn>
+              </div>
+
+              {/* 4 differentials */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 32px", marginTop: 44, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                {HERO_DIFFS.map(d => (
+                  <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 5 }} />
+                    <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.82rem", lineHeight: 1.45 }}>{d}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mascot column */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
               <Mascot size={180} variant={1} />
               <div style={{ background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 14, padding: "12px 18px", textAlign: "center", maxWidth: 200 }}>
                 <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0 }}>{CONTENT.slogan}</p>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -404,17 +457,18 @@ function Hero() {
 
 /* ─── About ──────────────────────────────────────────────── */
 function About() {
+  const isMobile = useIsMobile();
   return (
-    <section id="sobre" style={{ background: CREAM, padding: "96px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72, alignItems: "center" }} className="grid-1col-md">
+    <section id="sobre" style={{ background: CREAM, padding: isMobile ? "64px 0" : "96px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }} className="grid-1col-md">
 
           {/* Image */}
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", paddingBottom: 20 }}>
             <div style={{ borderRadius: 20, overflow: "hidden", background: WARM, aspectRatio: "4/3" }}>
               <img src={IMG_ABOUT} alt="Casal no aeroporto" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
-            <div style={{ position: "absolute", bottom: -18, right: -18, background: ORANGE, color: NAVY, borderRadius: 14, padding: "14px 20px", boxShadow: "0 8px 28px rgba(249,115,22,0.4)" }}>
+            <div style={{ position: "absolute", bottom: 0, right: 8, background: ORANGE, color: NAVY, borderRadius: 14, padding: "14px 20px", boxShadow: "0 8px 28px rgba(249,115,22,0.4)" }}>
               <div style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1.3rem", fontWeight: 800, lineHeight: 1 }}>Cadastur</div>
               <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 3 }}>Agência certificada</div>
             </div>
@@ -431,7 +485,6 @@ function About() {
               {CONTENT.sobreTexto}
             </p>
 
-            {/* Values checklist */}
             <ul style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
               {["Cuidado em cada atendimento", "Transparência nas orientações", "Agilidade para encontrar soluções", "Compromisso com cada viagem"].map(v => (
                 <li key={v} style={{ display: "flex", alignItems: "center", gap: 10, color: NAVY, fontSize: "0.9rem" }}>
@@ -441,12 +494,12 @@ function About() {
               ))}
             </ul>
 
-            <Btn href={CONTENT.whatsapp} variant="ghost" small>Fale conosco →</Btn>
+            <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />Fale com a Rodrigo.Tur</Btn>
           </div>
         </div>
 
         {/* Mission / Vision / Values */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 64 }} className="grid-1col-md">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }} className="grid-1col-md">
           {[
             { t: "Missão", txt: CONTENT.missao  },
             { t: "Visão",  txt: CONTENT.visao   },
@@ -467,12 +520,11 @@ function About() {
 function Historia() {
   const isMobile = useIsMobile();
   return (
-    <section id="historia" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: "96px 0" }}>
+    <section id="historia" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
       <FlightPath />
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        {/* Header */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", marginBottom: 56 }} className="grid-1col-md">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", marginBottom: 48 }} className="grid-1col-md">
           <div>
             <SectionLabel>Nossa História</SectionLabel>
             <SectionHeading light>{CONTENT.historiaSubtitulo}</SectionHeading>
@@ -483,7 +535,6 @@ function Historia() {
           {!isMobile && <Mascot size={140} variant={2} />}
         </div>
 
-        {/* Timeline */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm">
           {CONTENT.historiaTimeline.map((item, i) => (
             <div key={item.ano} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 16, padding: 24 }}>
@@ -496,6 +547,8 @@ function Historia() {
             </div>
           ))}
         </div>
+
+        <SectionCTA label="Planeje sua viagem" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
@@ -503,6 +556,7 @@ function Historia() {
 
 /* ─── Services ───────────────────────────────────────────── */
 function Services() {
+  const isMobile = useIsMobile();
   const services = [
     { Icon: PlaneIcon,   title: "Passagens nacionais",      desc: "Voos pelo Brasil com orientação personalizada." },
     { Icon: GlobeIcon,   title: "Passagens internacionais", desc: "Destinos no mundo com suporte em cada etapa." },
@@ -518,10 +572,10 @@ function Services() {
   ];
 
   return (
-    <section id="servicos" style={{ background: WARM, padding: "96px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+    <section id="servicos" style={{ background: WARM, padding: isMobile ? "64px 0" : "96px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <div style={{ textAlign: "center", marginBottom: 52 }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
           <SectionLabel>Serviços</SectionLabel>
           <SectionHeading>
             Tudo o que você precisa{" "}
@@ -530,9 +584,9 @@ function Services() {
         </div>
 
         {/* 6 service cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20, marginBottom: 72 }} className="grid-2col-sm grid-1col-xs">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginBottom: 64 }} className="grid-2col-sm grid-1col-xs">
           {services.map(({ Icon, title, desc }) => (
-            <div key={title} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 18, padding: 28, transition: "box-shadow .2s" }}
+            <div key={title} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 18, padding: 24, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
             >
@@ -546,11 +600,11 @@ function Services() {
         </div>
 
         {/* 3 opportunity cards */}
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
           <SectionLabel>Oportunidades</SectionLabel>
-          <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.6rem", fontWeight: 600 }}>Consulte as opções disponíveis</h3>
+          <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.3rem, 3vw, 1.6rem)", fontWeight: 600 }}>Consulte as opções disponíveis</h3>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }} className="grid-1col-sm">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="grid-1col-sm">
           {offers.map(o => (
             <div key={o.title} style={{ borderRadius: 18, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
@@ -567,6 +621,8 @@ function Services() {
             </div>
           ))}
         </div>
+
+        <SectionCTA label="Consultar opções" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
@@ -574,6 +630,7 @@ function Services() {
 
 /* ─── How it works ───────────────────────────────────────── */
 function HowItWorks() {
+  const isMobile = useIsMobile();
   const steps = [
     { Icon: WhatsAppIcon, title: "Fale com a Rodrigo.Tur",      desc: "WhatsApp, Instagram, site ou presencial." },
     { Icon: PhoneIcon,    title: "Conte o que você precisa",     desc: "Destino, período e preferências." },
@@ -582,28 +639,30 @@ function HowItWorks() {
     { Icon: PlaneIcon,    title: "Viaje com confiança",          desc: "Acompanhamento antes, durante e depois." },
   ];
   return (
-    <section id="como-funciona" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: "96px 0" }}>
+    <section id="como-funciona" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
       <FlightPath />
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
           <SectionLabel>Como funciona</SectionLabel>
           <SectionHeading light>Do primeiro contato <em style={{ color: ORANGE, fontStyle: "italic" }}>ao voo</em></SectionHeading>
           <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
           {steps.map(({ Icon, title, desc }, i) => (
             <div key={title} style={{ textAlign: "center" }}>
               <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(249,115,22,0.14)", border: `2px solid ${ORANGE}`, color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
                 <Icon />
               </div>
-              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "18px 14px" }}>
+              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "16px 12px" }}>
                 <div style={{ color: ORANGE, fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>0{i + 1}</div>
-                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "0.9rem", fontWeight: 600, marginBottom: 6 }}>{title}</h4>
+                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "0.88rem", fontWeight: 600, marginBottom: 6 }}>{title}</h4>
                 <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.78rem", lineHeight: 1.6 }}>{desc}</p>
               </div>
             </div>
           ))}
         </div>
+
+        <SectionCTA label="Começar meu atendimento" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
@@ -623,9 +682,9 @@ function Differentials() {
   ];
 
   return (
-    <section id="diferenciais" style={{ background: CREAM, padding: "96px 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ textAlign: "center", marginBottom: 16 }}>
+    <section id="diferenciais" style={{ background: CREAM, padding: isMobile ? "64px 0" : "96px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ textAlign: "center", marginBottom: 14 }}>
           <SectionLabel>Diferenciais</SectionLabel>
           <SectionHeading>
             Viajar pode ser mais simples{" "}
@@ -634,32 +693,29 @@ function Differentials() {
         </div>
 
         {/* Quote banner */}
-        <div style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: "32px 40px", margin: "36px 0 48px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
+        <div style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: isMobile ? "28px 24px" : "32px 40px", margin: "32px 0 44px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
           <FlightPath />
-          <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1rem, 2.2vw, 1.35rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
+          <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(0.95rem, 2.2vw, 1.3rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
           {!isMobile && <Mascot size={110} variant={2} />}
         </div>
 
-        {/* Cards grid */}
+        {/* Cards grid — 7 items, no extra CTA card */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
           {items.map(({ Icon, title, desc }, i) => (
-            <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 24, transition: "box-shadow .2s" }}
+            <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 22, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.08)")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
             >
-              <div style={{ color: i === 4 ? NAVY : ORANGE, marginBottom: 14 }}><Icon /></div>
-              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: i === 4 ? NAVY : NAVY, fontSize: "0.9rem", fontWeight: 600, marginBottom: 6, lineHeight: 1.4 }}>{title}</h4>
+              <div style={{ color: i === 4 ? NAVY : ORANGE, marginBottom: 12 }}><Icon /></div>
+              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "0.88rem", fontWeight: 600, marginBottom: 6, lineHeight: 1.4 }}>{title}</h4>
               <p style={{ color: i === 4 ? "rgba(13,27,62,0.7)" : MUTED, fontSize: "0.82rem", lineHeight: 1.6 }}>{desc}</p>
             </div>
           ))}
-          {/* CTA card */}
-          <div style={{ background: NAVY, borderRadius: 16, padding: 24, display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 20 }}>
-            <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "0.95rem", lineHeight: 1.5 }}>Pronto para sua próxima viagem?</p>
-            <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />Fale conosco</Btn>
-          </div>
         </div>
+
+        <SectionCTA label="Falar no WhatsApp" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
@@ -667,41 +723,41 @@ function Differentials() {
 
 /* ─── Contact ────────────────────────────────────────────── */
 function Contact() {
+  const isMobile = useIsMobile();
   return (
-    <section id="contato" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: "96px 0" }}>
+    <section id="contato" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
       <FlightPath />
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 56, textAlign: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 48, textAlign: "center" }}>
           <SectionLabel>Contato</SectionLabel>
           <SectionHeading light>Vamos planejar sua <em style={{ color: ORANGE, fontStyle: "italic" }}>próxima viagem?</em></SectionHeading>
           <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 440, lineHeight: 1.7, marginTop: 4 }}>
             Entre em contato por qualquer um dos nossos canais e comece a planejar agora mesmo.
           </p>
-          <div style={{ marginTop: 8 }}><Mascot size={80} variant={2} /></div>
+          <div style={{ marginTop: 4 }}><Mascot size={72} variant={2} /></div>
         </div>
 
-        {/* Main CTA — WhatsApp highlighted */}
-        <div style={{ background: ORANGE, borderRadius: 20, padding: "36px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 24 }}>
+        {/* WhatsApp CTA card */}
+        <div style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "28px 24px" : "36px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 20 }}>
           <div>
-            <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
-            <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.1rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
+            <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
+            <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
           </div>
           <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
-            style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+            style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
             <WhatsAppIcon />Falar no WhatsApp
           </a>
         </div>
 
         {/* 3 channel cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 24 }} className="grid-1col-sm">
-          {/* Site and Instagram — clickable links */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 20 }} className="grid-1col-sm">
           {[
             { Icon: GlobeIcon,     label: "Site",      val: CONTENT.siteDisplay,      href: CONTENT.site      },
             { Icon: InstagramIcon, label: "Instagram", val: CONTENT.instagramDisplay, href: CONTENT.instagram },
           ].map(c => (
             <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 20px", display: "flex", flexDirection: "column", gap: 10, textDecoration: "none", transition: "background .2s" }}
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 10, textDecoration: "none", transition: "background .2s" }}
               onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.11)")}
               onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
             >
@@ -712,16 +768,16 @@ function Contact() {
           ))}
 
           {/* Cadastur — visual badge only, no interaction */}
-          <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 20px", display: "flex", flexDirection: "column", gap: 10, cursor: "default" }}>
-            <span style={{ color: ORANGE }}><CalendarIcon /></span>
+          <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 10, cursor: "default" }}>
+            <span style={{ color: ORANGE }}><ShieldIcon /></span>
             <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Cadastur</div>
             <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>Agência cadastrada no Cadastur</div>
           </div>
         </div>
 
         {/* Address + hours */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="grid-1col-sm">
-          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 28, display: "flex", gap: 16, alignItems: "flex-start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="grid-1col-sm">
+          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 26, display: "flex", gap: 16, alignItems: "flex-start" }}>
             <span style={{ color: ORANGE, flexShrink: 0, marginTop: 2 }}><MapPinIcon /></span>
             <div>
               <div style={{ color: "white", fontWeight: 600, marginBottom: 6 }}>Endereço</div>
@@ -730,7 +786,7 @@ function Contact() {
                 style={{ color: ORANGE, fontSize: "0.82rem", fontWeight: 600, display: "inline-block", marginTop: 10 }}>Como chegar →</a>
             </div>
           </div>
-          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 28, display: "flex", gap: 16, alignItems: "flex-start" }}>
+          <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 26, display: "flex", gap: 16, alignItems: "flex-start" }}>
             <span style={{ color: ORANGE, flexShrink: 0, marginTop: 2 }}><ClockIcon /></span>
             <div style={{ width: "100%" }}>
               <div style={{ color: "white", fontWeight: 600, marginBottom: 14 }}>Horários de atendimento</div>
@@ -753,10 +809,11 @@ function Contact() {
 
 /* ─── Footer ─────────────────────────────────────────────── */
 function Footer() {
+  const isMobile = useIsMobile();
   return (
-    <footer style={{ background: "#071226", borderTop: "1px solid rgba(255,255,255,0.06)", padding: "64px 0 0" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }} className="grid-2col-sm grid-1col-xs">
+    <footer style={{ background: "#071226", borderTop: "1px solid rgba(255,255,255,0.06)", padding: isMobile ? "48px 0 0" : "64px 0 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 36, marginBottom: 44 }} className="grid-2col-sm grid-1col-xs">
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
@@ -800,8 +857,8 @@ function Footer() {
             ].map(c => (
               <a key={c.text} href={c.href} target="_blank" rel="noopener noreferrer"
                 style={{ display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.55)", fontSize: "0.85rem", marginBottom: 10, textDecoration: "none", transition: "color .15s" }}
-                onMouseEnter={e => ((e.currentTarget).style.color = "white")}
-                onMouseLeave={e => ((e.currentTarget).style.color = "rgba(255,255,255,0.55)")}
+                onMouseEnter={e => (e.currentTarget.style.color = "white")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
               >
                 <span style={{ color: ORANGE, flexShrink: 0 }}><c.Icon /></span>{c.text}
               </a>
@@ -829,7 +886,7 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "Outfit, system-ui, sans-serif" }}>
+    <div style={{ fontFamily: "Outfit, system-ui, sans-serif", overflowX: "hidden" }}>
       <Nav scrolled={scrolled} />
       <Hero />
       <About />
