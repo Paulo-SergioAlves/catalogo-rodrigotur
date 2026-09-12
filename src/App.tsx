@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import logoImg from "@/imports/images.jpeg";
 import mascotImg from "@/imports/ChatGPT_Image_10_de_ago._de_2026__20_48_33.png";
 import mascot2Img from "@/imports/ChatGPT_Image_10_de_ago._de_2026__20_48_33-1.png";
@@ -211,6 +211,101 @@ function useIsMobile(breakpoint = 768) {
   return mobile;
 }
 
+/* ─── useReveal (IntersectionObserver scroll reveal) ────── */
+function useReveal(rootMargin = "-40px") {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setVisible(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.unobserve(el); } },
+      { threshold: 0.08, rootMargin: `0px 0px ${rootMargin} 0px` }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [rootMargin]);
+  return [ref, visible] as const;
+}
+
+function Reveal({
+  children, delay = 0, className, style,
+}: {
+  children: React.ReactNode; delay?: number; className?: string; style?: React.CSSProperties;
+}) {
+  const [ref, visible] = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(22px)",
+        transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ─── Floating WhatsApp button ───────────────────────────── */
+function FloatingWhatsApp() {
+  const [entered, setEntered] = useState(false);
+  const isMobile = useIsMobile();
+  useEffect(() => {
+    const t = setTimeout(() => setEntered(true), 700);
+    return () => clearTimeout(t);
+  }, []);
+  const size = isMobile ? 56 : "auto";
+  return (
+    <a
+      href={CONTENT.whatsapp}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Fale conosco pelo WhatsApp"
+      style={{
+        position: "fixed",
+        bottom: 24,
+        right: 24,
+        zIndex: 200,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
+        background: ORANGE,
+        color: NAVY,
+        borderRadius: isMobile ? "50%" : 999,
+        width: size,
+        height: size,
+        padding: isMobile ? 0 : "13px 22px",
+        fontWeight: 700,
+        fontSize: "0.9rem",
+        fontFamily: "Outfit, system-ui, sans-serif",
+        textDecoration: "none",
+        boxShadow: "0 4px 24px rgba(249,115,22,0.45), 0 2px 8px rgba(0,0,0,0.15)",
+        opacity: entered ? 1 : 0,
+        transform: entered ? "translateY(0)" : "translateY(20px)",
+        transition: "opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s, opacity 0.2s",
+        flexShrink: 0,
+        whiteSpace: "nowrap",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 6px 32px rgba(249,115,22,0.65), 0 2px 8px rgba(0,0,0,0.15)")}
+      onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 4px 24px rgba(249,115,22,0.45), 0 2px 8px rgba(0,0,0,0.15)")}
+    >
+      <svg width={isMobile ? 28 : 22} height={isMobile ? 28 : 22} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+      </svg>
+      {!isMobile && <span>Fale conosco</span>}
+    </a>
+  );
+}
+
 /* ─── Nav ────────────────────────────────────────────────── */
 function Nav({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
@@ -369,7 +464,7 @@ function Hero() {
 
         {/* ── Mobile: single centered column ── */}
         {isMobile && (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
             {/* Badge */}
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 22 }}>
               <PlaneIcon />
@@ -409,7 +504,7 @@ function Hero() {
 
         {/* ── Desktop: 2-column layout ── */}
         {!isMobile && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 48, alignItems: "center" }}>
+          <div className="fade-up" style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 48, alignItems: "center" }}>
             <div style={{ maxWidth: 620 }}>
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 28 }}>
                 <PlaneIcon />
@@ -461,7 +556,7 @@ function About() {
   return (
     <section id="sobre" style={{ background: CREAM, padding: isMobile ? "64px 0" : "96px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }} className="grid-1col-md">
+        <Reveal style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }} className="grid-1col-md">
 
           {/* Image */}
           <div style={{ position: "relative", paddingBottom: 20 }}>
@@ -496,10 +591,10 @@ function About() {
 
             <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />Fale com a Rodrigo.Tur</Btn>
           </div>
-        </div>
+        </Reveal>
 
         {/* Mission / Vision / Values */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }} className="grid-1col-md">
+        <Reveal delay={100} style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 56 }} className="grid-1col-md">
           {[
             { t: "Missão", txt: CONTENT.missao  },
             { t: "Visão",  txt: CONTENT.visao   },
@@ -510,7 +605,7 @@ function About() {
               <p style={{ color: MUTED, lineHeight: 1.7, fontSize: "0.88rem" }}>{c.txt}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -524,7 +619,7 @@ function Historia() {
       <FlightPath />
       <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", marginBottom: 48 }} className="grid-1col-md">
+        <Reveal style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", marginBottom: 48 }} className="grid-1col-md">
           <div>
             <SectionLabel>Nossa História</SectionLabel>
             <SectionHeading light>{CONTENT.historiaSubtitulo}</SectionHeading>
@@ -533,9 +628,9 @@ function Historia() {
             </p>
           </div>
           {!isMobile && <Mascot size={140} variant={2} />}
-        </div>
+        </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm">
+        <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm">
           {CONTENT.historiaTimeline.map((item, i) => (
             <div key={item.ano} style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 16, padding: 24 }}>
               <div style={{ width: 36, height: 36, borderRadius: "50%", background: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
@@ -546,7 +641,7 @@ function Historia() {
               <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.82rem", lineHeight: 1.6 }}>{item.desc}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         <SectionCTA label="Planeje sua viagem" href={CONTENT.whatsapp} />
       </div>
@@ -575,16 +670,16 @@ function Services() {
     <section id="servicos" style={{ background: WARM, padding: isMobile ? "64px 0" : "96px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
+        <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
           <SectionLabel>Serviços</SectionLabel>
           <SectionHeading>
             Tudo o que você precisa{" "}
             <em style={{ color: ORANGE, fontStyle: "italic" }}>para viajar bem</em>
           </SectionHeading>
-        </div>
+        </Reveal>
 
         {/* 6 service cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginBottom: 64 }} className="grid-2col-sm grid-1col-xs">
+        <Reveal delay={100} style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginBottom: 64 }} className="grid-2col-sm grid-1col-xs">
           {services.map(({ Icon, title, desc }) => (
             <div key={title} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 18, padding: 24, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
@@ -597,14 +692,14 @@ function Services() {
               <p style={{ color: MUTED, fontSize: "0.87rem", lineHeight: 1.65 }}>{desc}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         {/* 3 opportunity cards */}
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <Reveal delay={80} style={{ textAlign: "center", marginBottom: 28 }}>
           <SectionLabel>Oportunidades</SectionLabel>
           <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.3rem, 3vw, 1.6rem)", fontWeight: 600 }}>Consulte as opções disponíveis</h3>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="grid-1col-sm">
+        </Reveal>
+        <Reveal delay={160} style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="grid-1col-sm">
           {offers.map(o => (
             <div key={o.title} style={{ borderRadius: 18, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
@@ -620,7 +715,7 @@ function Services() {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         <SectionCTA label="Consultar opções" href={CONTENT.whatsapp} />
       </div>
@@ -642,12 +737,12 @@ function HowItWorks() {
     <section id="como-funciona" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
       <FlightPath />
       <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
+        <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
           <SectionLabel>Como funciona</SectionLabel>
           <SectionHeading light>Do primeiro contato <em style={{ color: ORANGE, fontStyle: "italic" }}>ao voo</em></SectionHeading>
           <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
+        </Reveal>
+        <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
           {steps.map(({ Icon, title, desc }, i) => (
             <div key={title} style={{ textAlign: "center" }}>
               <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(249,115,22,0.14)", border: `2px solid ${ORANGE}`, color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
@@ -660,7 +755,7 @@ function HowItWorks() {
               </div>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         <SectionCTA label="Começar meu atendimento" href={CONTENT.whatsapp} />
       </div>
@@ -684,25 +779,25 @@ function Differentials() {
   return (
     <section id="diferenciais" style={{ background: CREAM, padding: isMobile ? "64px 0" : "96px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <div style={{ textAlign: "center", marginBottom: 14 }}>
+        <Reveal style={{ textAlign: "center", marginBottom: 14 }}>
           <SectionLabel>Diferenciais</SectionLabel>
           <SectionHeading>
             Viajar pode ser mais simples{" "}
             <em style={{ color: ORANGE, fontStyle: "italic" }}>quando você tem apoio</em>
           </SectionHeading>
-        </div>
+        </Reveal>
 
         {/* Quote banner */}
-        <div style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: isMobile ? "28px 24px" : "32px 40px", margin: "32px 0 44px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
+        <Reveal delay={100} style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: isMobile ? "28px 24px" : "32px 40px", margin: "32px 0 44px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
           <FlightPath />
           <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(0.95rem, 2.2vw, 1.3rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
           {!isMobile && <Mascot size={110} variant={2} />}
-        </div>
+        </Reveal>
 
         {/* Cards grid — 7 items, no extra CTA card */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
+        <Reveal delay={150} style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
           {items.map(({ Icon, title, desc }, i) => (
             <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 22, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.08)")}
@@ -713,7 +808,7 @@ function Differentials() {
               <p style={{ color: i === 4 ? "rgba(13,27,62,0.7)" : MUTED, fontSize: "0.82rem", lineHeight: 1.6 }}>{desc}</p>
             </div>
           ))}
-        </div>
+        </Reveal>
 
         <SectionCTA label="Falar no WhatsApp" href={CONTENT.whatsapp} />
       </div>
@@ -729,17 +824,17 @@ function Contact() {
       <FlightPath />
       <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 48, textAlign: "center" }}>
+        <Reveal style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 48, textAlign: "center" }}>
           <SectionLabel>Contato</SectionLabel>
           <SectionHeading light>Vamos planejar sua <em style={{ color: ORANGE, fontStyle: "italic" }}>próxima viagem?</em></SectionHeading>
           <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 440, lineHeight: 1.7, marginTop: 4 }}>
             Entre em contato por qualquer um dos nossos canais e comece a planejar agora mesmo.
           </p>
           <div style={{ marginTop: 4 }}><Mascot size={72} variant={2} /></div>
-        </div>
+        </Reveal>
 
         {/* WhatsApp CTA card */}
-        <div style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "28px 24px" : "36px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 20 }}>
+        <Reveal delay={80} style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "28px 24px" : "36px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 20 }}>
           <div>
             <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
             <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
@@ -748,10 +843,10 @@ function Contact() {
             style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
             <WhatsAppIcon />Falar no WhatsApp
           </a>
-        </div>
+        </Reveal>
 
         {/* 3 channel cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 20 }} className="grid-1col-sm">
+        <Reveal delay={140} style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 20 }} className="grid-1col-sm">
           {[
             { Icon: GlobeIcon,     label: "Site",      val: CONTENT.siteDisplay,      href: CONTENT.site      },
             { Icon: InstagramIcon, label: "Instagram", val: CONTENT.instagramDisplay, href: CONTENT.instagram },
@@ -773,10 +868,10 @@ function Contact() {
             <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Cadastur</div>
             <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>Agência cadastrada no Cadastur</div>
           </div>
-        </div>
+        </Reveal>
 
         {/* Address + hours */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="grid-1col-sm">
+        <Reveal delay={180} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="grid-1col-sm">
           <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 26, display: "flex", gap: 16, alignItems: "flex-start" }}>
             <span style={{ color: ORANGE, flexShrink: 0, marginTop: 2 }}><MapPinIcon /></span>
             <div>
@@ -801,7 +896,7 @@ function Contact() {
               ))}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -887,6 +982,7 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: "Outfit, system-ui, sans-serif", overflowX: "hidden" }}>
+      <FloatingWhatsApp />
       <Nav scrolled={scrolled} />
       <Hero />
       <About />

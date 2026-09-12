@@ -76,3 +76,8 @@ body {
 .fade-up {
   animation: fadeUp 0.7s ease forwards;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-anim { animation: none; }
+  .fade-up { animation: none; opacity: 1; transform: none; }
+}
