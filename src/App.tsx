@@ -450,38 +450,38 @@ const HERO_DIFFS = [
 
 function Hero() {
   const isMobile = useIsMobile();
-  const isVerySmall = useIsMobile(360);
+  const isNarrow = useIsMobile(480);
 
   return (
-    <section id="inicio" style={{ background: NAVY, minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}>
+    <section id="inicio" style={{ background: NAVY, minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: isMobile ? "flex-start" : "center" }}>
       <div style={{ position: "absolute", inset: 0 }}>
         <img src={IMG_HERO} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, rgba(13,27,62,0.55) 0%, rgba(13,27,62,0.88) 70%, ${NAVY} 100%)` }} />
       </div>
       <FlightPath />
 
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "96px 20px 60px" : "120px 24px 80px", width: "100%" }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "72px 20px 56px" : "120px 24px 80px", width: "100%" }}>
 
-        {/* ── Mobile: single centered column ── */}
+        {/* ── Mobile: single column, top-aligned ── */}
         {isMobile && (
-          <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+          <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "left" }}>
             {/* Badge */}
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 16px", marginBottom: 22 }}>
+            <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 14px", marginBottom: 18 }}>
               <PlaneIcon />
-              <span style={{ color: ORANGE, fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Passagens Aéreas · Queimadas/PB</span>
+              <span style={{ color: ORANGE, fontSize: "0.67rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em" }}>Passagens Aéreas · Queimadas/PB</span>
             </div>
 
-            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.75rem, 7.5vw, 2.8rem)", lineHeight: 1.15, fontWeight: 600, marginBottom: 16 }}>
+            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.65rem, 7vw, 2.4rem)", lineHeight: 1.18, fontWeight: 600, marginBottom: 14 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de Rodrigo.Tur!</em>
             </h1>
 
-            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem", lineHeight: 1.75, marginBottom: 28, maxWidth: 420 }}>
+            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.92rem", lineHeight: 1.7, marginBottom: 24 }}>
               {CONTENT.subtitulo}
             </p>
 
-            {/* Buttons: 2-col ≥360px, 1-col below */}
-            <div style={{ display: "grid", gridTemplateColumns: isVerySmall ? "1fr" : "1fr 1fr", gap: 12, width: "100%", maxWidth: 440 }}>
+            {/* Buttons: side by side ≥480px, stacked below */}
+            <div style={{ display: "grid", gridTemplateColumns: isNarrow ? "1fr" : "1fr 1fr", gap: 10, width: "100%" }}>
               <Btn href={CONTENT.whatsapp} variant="primary" block>
                 <WhatsAppIcon />Falar no WhatsApp
               </Btn>
@@ -491,11 +491,11 @@ function Hero() {
             </div>
 
             {/* 4 differentials */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 16px", marginTop: 32, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.08)", width: "100%", maxWidth: 440 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 14px", marginTop: 28, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               {HERO_DIFFS.map(d => (
-                <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7, textAlign: "left" }}>
+                <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 4 }} />
-                  <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", lineHeight: 1.4 }}>{d}</span>
+                  <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.74rem", lineHeight: 1.4 }}>{d}</span>
                 </div>
               ))}
             </div>
