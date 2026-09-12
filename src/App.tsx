@@ -179,62 +179,161 @@ const PersonIcon  = () => <I d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 
 const CheckIcon   = () => <I d="M20 6L9 17l-5-5" size={15} />;
 const PhoneIcon   = () => <I d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />;
 
+/* ─── useIsMobile ────────────────────────────────────────── */
+function useIsMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    const fn = () => setMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", fn, { passive: true });
+    return () => window.removeEventListener("resize", fn);
+  }, [breakpoint]);
+  return mobile;
+}
+
 /* ─── Nav ────────────────────────────────────────────────── */
 function Nav({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  // Close drawer when switching to desktop
+  useEffect(() => { if (!isMobile) setOpen(false); }, [isMobile]);
+
+  // Prevent body scroll when drawer is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  const headerBg = scrolled ? "rgba(13,27,62,0.97)" : "transparent";
+
   return (
-    <header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, background: scrolled ? "rgba(13,27,62,0.97)" : "transparent", backdropFilter: scrolled ? "blur(12px)" : "none", borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none", transition: "all .3s" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        {/* Brand */}
-        <a href="#inicio" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <Logo size={42} />
-          <div>
-            <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.15rem", fontWeight: 700, lineHeight: 1 }}>
-              RODRIGO<span style={{ color: ORANGE }}>TUR</span>
+    <>
+      <header style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        background: headerBg,
+        backdropFilter: scrolled ? "blur(14px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
+        transition: "background .3s, border-color .3s",
+      }}>
+        <div style={{
+          maxWidth: 1200, margin: "0 auto",
+          padding: "0 20px",
+          height: isMobile ? 60 : 68,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          overflow: "hidden",
+        }}>
+          {/* Brand — always visible */}
+          <a href="#inicio" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
+            <Logo size={isMobile ? 36 : 42} />
+            <div>
+              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: isMobile ? "1rem" : "1.15rem", fontWeight: 700, lineHeight: 1 }}>
+                RODRIGO<span style={{ color: ORANGE }}>TUR</span>
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Agência de Viagens</div>
             </div>
-            <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Agência de Viagens</div>
-          </div>
-        </a>
+          </a>
 
-        {/* Desktop nav */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 2 }} className="hidden lg:flex">
-          {NAV.map(n => (
-            <a key={n.href} href={n.href} style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.88rem", fontWeight: 500, padding: "8px 14px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s" }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.color = "white"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.08)"; }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.78)"; (e.target as HTMLElement).style.background = "transparent"; }}
-            >{n.label}</a>
-          ))}
-        </nav>
+          {/* Desktop: horizontal nav + CTA */}
+          {!isMobile && (
+            <>
+              <nav style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                {NAV.map(n => (
+                  <a key={n.href} href={n.href} style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.88rem", fontWeight: 500, padding: "8px 14px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s" }}
+                    onMouseEnter={e => { (e.target as HTMLElement).style.color = "white"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.09)"; }}
+                    onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.78)"; (e.target as HTMLElement).style.background = "transparent"; }}
+                  >{n.label}</a>
+                ))}
+              </nav>
+              <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
+            </>
+          )}
 
-        {/* CTA + hamburger */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div className="hidden lg:block">
-            <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
-          </div>
-          <button className="lg:hidden" onClick={() => setOpen(!open)} style={{ color: "white", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
-            {open ? <XIcon /> : <MenuIcon />}
-          </button>
+          {/* Mobile: hamburger button only */}
+          {isMobile && (
+            <button
+              onClick={() => setOpen(v => !v)}
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              style={{ color: "white", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, cursor: "pointer", padding: "8px 10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+            >
+              {open ? <XIcon /> : <MenuIcon />}
+            </button>
+          )}
         </div>
-      </div>
+      </header>
 
-      {/* Mobile drawer */}
-      {open && (
-        <div style={{ background: NAVY, borderTop: "1px solid rgba(255,255,255,0.08)", padding: "12px 20px 24px" }} className="lg:hidden">
-          {NAV.map(n => (
-            <a key={n.href} href={n.href} style={{ display: "block", color: "rgba(255,255,255,0.82)", fontSize: "1rem", fontWeight: 500, padding: "13px 8px", borderBottom: "1px solid rgba(255,255,255,0.06)", textDecoration: "none" }}
-              onClick={() => setOpen(false)}>{n.label}</a>
-          ))}
-          <div style={{ marginTop: 20 }}>
-            <Btn href={CONTENT.whatsapp} variant="primary"><WhatsAppIcon />Falar no WhatsApp</Btn>
+      {/* Mobile full-screen overlay drawer */}
+      {isMobile && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 99,
+          background: "rgba(7,18,38,0.55)",
+          backdropFilter: "blur(3px)",
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? "auto" : "none",
+          transition: "opacity .25s",
+        }} onClick={() => setOpen(false)} />
+      )}
+
+      {isMobile && (
+        <div style={{
+          position: "fixed", top: 60, right: 0, bottom: 0, zIndex: 100,
+          width: "min(320px, 88vw)",
+          background: `linear-gradient(160deg, #0D1B3E 0%, #071226 100%)`,
+          borderLeft: "1px solid rgba(255,255,255,0.08)",
+          display: "flex", flexDirection: "column",
+          padding: "8px 0 32px",
+          transform: open ? "translateX(0)" : "translateX(105%)",
+          transition: "transform .3s cubic-bezier(.4,0,.2,1)",
+          overflowY: "auto",
+          boxShadow: "-12px 0 48px rgba(0,0,0,0.4)",
+        }}>
+          {/* Close button row */}
+          <div style={{ display: "flex", justifyContent: "flex-end", padding: "8px 16px 4px" }}>
+            <button onClick={() => setOpen(false)} aria-label="Fechar menu"
+              style={{ color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "none", borderRadius: 8, cursor: "pointer", padding: "8px 10px", display: "flex" }}>
+              <XIcon />
+            </button>
+          </div>
+
+          {/* Nav links */}
+          <nav style={{ flex: 1, display: "flex", flexDirection: "column", padding: "8px 0" }}>
+            {NAV.map((n, i) => (
+              <a key={n.href} href={n.href}
+                onClick={() => setOpen(false)}
+                style={{
+                  display: "flex", alignItems: "center",
+                  color: "rgba(255,255,255,0.85)",
+                  fontSize: "1.05rem", fontWeight: 500,
+                  padding: "16px 28px",
+                  textDecoration: "none",
+                  borderBottom: i < NAV.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+                  transition: "color .15s, background .15s",
+                  minHeight: 56,
+                }}
+                onMouseEnter={e => { (e.currentTarget).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget).style.color = "white"; }}
+                onMouseLeave={e => { (e.currentTarget).style.background = "transparent"; (e.currentTarget).style.color = "rgba(255,255,255,0.85)"; }}
+              >
+                {n.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* WhatsApp CTA */}
+          <div style={{ padding: "20px 24px 0" }}>
+            <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, width: "100%", background: ORANGE, color: NAVY, borderRadius: 14, padding: "16px 20px", fontWeight: 800, fontSize: "1rem", textDecoration: "none", boxShadow: "0 4px 18px rgba(249,115,22,0.4)" }}>
+              <WhatsAppIcon />Falar no WhatsApp
+            </a>
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
 
 /* ─── Hero ───────────────────────────────────────────────── */
 function Hero() {
+  const isMobile = useIsMobile();
   return (
     <section id="inicio" style={{ background: NAVY, minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: "center" }}>
       {/* BG photo */}
@@ -289,12 +388,14 @@ function Hero() {
           </div>
 
           {/* Right – mascot */}
-          <div className="hidden lg:flex" style={{ flexDirection: "column", alignItems: "center", gap: 16 }}>
-            <Mascot size={180} variant={1} />
-            <div style={{ background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 14, padding: "12px 18px", textAlign: "center", maxWidth: 200 }}>
-              <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0 }}>{CONTENT.slogan}</p>
+          {!isMobile && (
+            <div style={{ flexDirection: "column", alignItems: "center", gap: 16, display: "flex" }}>
+              <Mascot size={180} variant={1} />
+              <div style={{ background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 14, padding: "12px 18px", textAlign: "center", maxWidth: 200 }}>
+                <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0 }}>{CONTENT.slogan}</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>
@@ -364,6 +465,7 @@ function About() {
 
 /* ─── História ───────────────────────────────────────────── */
 function Historia() {
+  const isMobile = useIsMobile();
   return (
     <section id="historia" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: "96px 0" }}>
       <FlightPath />
@@ -378,9 +480,7 @@ function Historia() {
               {CONTENT.historiaTexto}
             </p>
           </div>
-          <div className="hidden lg:block">
-            <Mascot size={140} variant={2} />
-          </div>
+          {!isMobile && <Mascot size={140} variant={2} />}
         </div>
 
         {/* Timeline */}
@@ -488,7 +588,7 @@ function HowItWorks() {
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <SectionLabel>Como funciona</SectionLabel>
           <SectionHeading light>Do primeiro contato <em style={{ color: ORANGE, fontStyle: "italic" }}>ao voo</em></SectionHeading>
-          <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>{CONTENT.comoFuncionaQuote ?? "Um processo simples, claro e com acompanhamento em cada etapa."}</p>
+          <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
           {steps.map(({ Icon, title, desc }, i) => (
@@ -511,6 +611,7 @@ function HowItWorks() {
 
 /* ─── Differentials ──────────────────────────────────────── */
 function Differentials() {
+  const isMobile = useIsMobile();
   const items = [
     { Icon: PersonIcon,   title: "Atendimento humano e personalizado",       desc: "Cada cliente recebe atenção individual e orientação dedicada." },
     { Icon: ClockIcon,    title: "Atendimento online todos os dias",         desc: "Disponíveis para você em qualquer dia da semana." },
@@ -538,9 +639,7 @@ function Differentials() {
           <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1rem, 2.2vw, 1.35rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
-          <div className="hidden md:block" style={{ flexShrink: 0 }}>
-            <Mascot size={110} variant={2} />
-          </div>
+          {!isMobile && <Mascot size={110} variant={2} />}
         </div>
 
         {/* Cards grid */}
