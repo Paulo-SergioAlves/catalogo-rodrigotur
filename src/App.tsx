@@ -695,10 +695,10 @@ function Contact() {
 
         {/* 3 channel cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 24 }} className="grid-1col-sm">
+          {/* Site and Instagram — clickable links */}
           {[
-            { Icon: GlobeIcon,     label: "Site",       val: CONTENT.siteDisplay,      href: CONTENT.site      },
-            { Icon: InstagramIcon, label: "Instagram",  val: CONTENT.instagramDisplay, href: CONTENT.instagram },
-            { Icon: CalendarIcon,  label: "Cadastur",   val: "Agência certificada",    href: "#"               },
+            { Icon: GlobeIcon,     label: "Site",      val: CONTENT.siteDisplay,      href: CONTENT.site      },
+            { Icon: InstagramIcon, label: "Instagram", val: CONTENT.instagramDisplay, href: CONTENT.instagram },
           ].map(c => (
             <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer"
               style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 20px", display: "flex", flexDirection: "column", gap: 10, textDecoration: "none", transition: "background .2s" }}
@@ -710,6 +710,13 @@ function Contact() {
               <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>{c.val}</div>
             </a>
           ))}
+
+          {/* Cadastur — visual badge only, no interaction */}
+          <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "24px 20px", display: "flex", flexDirection: "column", gap: 10, cursor: "default" }}>
+            <span style={{ color: ORANGE }}><CalendarIcon /></span>
+            <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Cadastur</div>
+            <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>Agência cadastrada no Cadastur</div>
+          </div>
         </div>
 
         {/* Address + hours */}
