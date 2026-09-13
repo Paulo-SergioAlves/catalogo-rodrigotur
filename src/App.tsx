@@ -653,74 +653,148 @@ function Historia() {
 }
 
 /* ─── Services ───────────────────────────────────────────── */
+const SVC_BG = "#F3F5FB"; /* cool-tinted white — different from WARM */
+
+function ServiceItem({
+  Icon, title, desc, index, isDesktop,
+}: {
+  Icon: () => JSX.Element; title: string; desc: string; index: number; isDesktop: boolean;
+}) {
+  const num = String(index + 1).padStart(2, "0");
+
+  const handleEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDesktop) return;
+    e.currentTarget.style.background = "white";
+    e.currentTarget.style.transform = "translateY(-3px)";
+    e.currentTarget.style.boxShadow = "0 8px 28px rgba(13,27,62,0.08)";
+    e.currentTarget.style.borderColor = "rgba(249,115,22,0.4)";
+    const bar = e.currentTarget.querySelector<HTMLElement>(".svc-bar");
+    if (bar) bar.style.width = "40px";
+    const icon = e.currentTarget.querySelector<HTMLElement>(".svc-icon");
+    if (icon) { icon.style.color = ORANGE; icon.style.opacity = "1"; }
+  };
+  const handleLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDesktop) return;
+    e.currentTarget.style.background = "transparent";
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = "none";
+    e.currentTarget.style.borderColor = "rgba(13,27,62,0.08)";
+    const bar = e.currentTarget.querySelector<HTMLElement>(".svc-bar");
+    if (bar) bar.style.width = "24px";
+    const icon = e.currentTarget.querySelector<HTMLElement>(".svc-icon");
+    if (icon) { icon.style.color = NAVY; icon.style.opacity = "0.6"; }
+  };
+
+  return (
+    <div
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      style={{
+        padding: "28px 24px 28px",
+        border: "1px solid rgba(13,27,62,0.08)",
+        borderRadius: 12,
+        background: "transparent",
+        transition: "background .2s, transform .2s, box-shadow .2s, border-color .2s",
+        cursor: isDesktop ? "default" : undefined,
+      }}
+    >
+      {/* Number + Icon row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+        <span style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "0.7rem", color: "rgba(13,27,62,0.25)", fontWeight: 700, letterSpacing: "0.15em" }}>{num}</span>
+        <span className="svc-icon" style={{ color: NAVY, opacity: 0.6, transition: "color .2s, opacity .2s", display: "flex" }}>
+          <Icon />
+        </span>
+      </div>
+
+      {/* Orange accent bar */}
+      <div className="svc-bar" style={{ width: 24, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 14, transition: "width .25s" }} />
+
+      {/* Title */}
+      <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, lineHeight: 1.35, marginBottom: 8 }}>{title}</h3>
+
+      {/* Description */}
+      <p style={{ color: MUTED, fontSize: "0.84rem", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{desc}</p>
+    </div>
+  );
+}
+
 function Services() {
   const isMobile = useIsMobile();
+  const isDesktop = !isMobile;
+
   const services = [
-    { Icon: PlaneIcon,   title: "Passagens nacionais",      desc: "Voos pelo Brasil com orientação personalizada." },
-    { Icon: GlobeIcon,   title: "Passagens internacionais", desc: "Destinos no mundo com suporte em cada etapa." },
-    { Icon: LuggageIcon, title: "Despacho de bagagem",      desc: "Ajuda para organizar sua bagagem com segurança." },
-    { Icon: SeatIcon,    title: "Escolha de assentos",      desc: "Mais conforto na hora de escolher seu lugar." },
-    { Icon: CheckinIcon, title: "Check-in e alterações",    desc: "Suporte para check-in e ajustes na viagem." },
-    { Icon: HeadsetIcon, title: "Suporte completo",         desc: "Atendimento antes, durante e depois da viagem." },
+    { Icon: PlaneIcon,   title: "Passagens nacionais",      desc: "Voos pelo Brasil com orientação personalizada para o melhor itinerário." },
+    { Icon: GlobeIcon,   title: "Passagens internacionais", desc: "Destinos no mundo com suporte completo em cada etapa da compra." },
+    { Icon: LuggageIcon, title: "Despacho de bagagem",      desc: "Orientação para organizar e despachar sua bagagem com segurança." },
+    { Icon: SeatIcon,    title: "Escolha de assentos",      desc: "Seleção do assento ideal para mais conforto durante o voo." },
+    { Icon: CheckinIcon, title: "Check-in e alterações",    desc: "Suporte no check-in online e em ajustes de passagem quando necessário." },
+    { Icon: HeadsetIcon, title: "Suporte completo",         desc: "Atendimento dedicado antes, durante e depois da sua viagem." },
   ];
+
   const offers = [
-    { title: "Voos nacionais",          desc: "Consulte opções para viajar pelo Brasil.",    img: IMG_BEACH },
-    { title: "Voos internacionais",     desc: "Seu destino no exterior começa aqui.",        img: IMG_ISLAND },
-    { title: "Atendimento personalizado", desc: "Para o seu destino, no período que precisar.", img: IMG_AIRPORT },
+    { title: "Voos nacionais",            desc: "Consulte opções para viajar pelo Brasil.",         img: IMG_BEACH   },
+    { title: "Voos internacionais",       desc: "Seu destino no exterior começa aqui.",             img: IMG_ISLAND  },
+    { title: "Atendimento personalizado", desc: "Para o seu destino, no período que precisar.",     img: IMG_AIRPORT },
   ];
 
   return (
-    <section id="servicos" style={{ background: WARM, padding: isMobile ? "64px 0" : "96px 0" }}>
+    <section id="servicos" style={{ background: SVC_BG, padding: isMobile ? "64px 0" : "100px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
-          <SectionLabel>Serviços</SectionLabel>
-          <SectionHeading>
-            Tudo o que você precisa{" "}
-            <em style={{ color: ORANGE, fontStyle: "italic" }}>para viajar bem</em>
-          </SectionHeading>
+        {/* Header */}
+        <Reveal style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", gap: 20, marginBottom: 56 }}>
+          <div>
+            <SectionLabel>Serviços</SectionLabel>
+            <SectionHeading>
+              Tudo o que você precisa{" "}
+              <em style={{ color: ORANGE, fontStyle: "italic" }}>para viajar bem</em>
+            </SectionHeading>
+          </div>
+          {!isMobile && (
+            <p style={{ color: MUTED, fontSize: "0.9rem", lineHeight: 1.65, maxWidth: 280, textAlign: "right", flexShrink: 0 }}>
+              Passagens nacionais e internacionais com suporte em cada etapa da sua viagem.
+            </p>
+          )}
         </Reveal>
 
-        {/* 6 service cards */}
-        <Reveal delay={100} style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18, marginBottom: 64 }} className="grid-2col-sm grid-1col-xs">
-          {services.map(({ Icon, title, desc }) => (
-            <div key={title} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 18, padding: 24, transition: "box-shadow .2s" }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
-            >
-              <div style={{ width: 48, height: 48, borderRadius: 13, background: "#FFF0E6", color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                <Icon />
-              </div>
-              <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, marginBottom: 8 }}>{title}</h3>
-              <p style={{ color: MUTED, fontSize: "0.87rem", lineHeight: 1.65 }}>{desc}</p>
-            </div>
+        {/* 6 service items — editorial grid */}
+        <Reveal delay={80} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 16, marginBottom: 72 }}>
+          {services.map((s, i) => (
+            <ServiceItem key={s.title} {...s} index={i} isDesktop={isDesktop} />
           ))}
         </Reveal>
 
-        {/* 3 opportunity cards */}
-        <Reveal delay={80} style={{ textAlign: "center", marginBottom: 28 }}>
-          <SectionLabel>Oportunidades</SectionLabel>
-          <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.3rem, 3vw, 1.6rem)", fontWeight: 600 }}>Consulte as opções disponíveis</h3>
+        {/* Divider */}
+        <div style={{ height: 1, background: `linear-gradient(to right, rgba(13,27,62,0.08), rgba(13,27,62,0.04))`, marginBottom: 56 }} />
+
+        {/* Opportunities */}
+        <Reveal style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: 12, marginBottom: 28 }}>
+          <div>
+            <SectionLabel>Oportunidades</SectionLabel>
+            <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.3rem, 3vw, 1.55rem)", fontWeight: 600, marginTop: 4 }}>Consulte as opções disponíveis</h3>
+          </div>
         </Reveal>
-        <Reveal delay={160} style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="grid-1col-sm">
+
+        <Reveal delay={100} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 18 }}>
           {offers.map(o => (
-            <div key={o.title} style={{ borderRadius: 18, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s" }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.09)")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
+            <div key={o.title} style={{ borderRadius: 10, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s, transform .2s" }}
+              onMouseEnter={e => { if (isDesktop) { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,27,62,0.1)"; e.currentTarget.style.transform = "translateY(-2px)"; } }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              <div style={{ height: 160, overflow: "hidden", background: WARM }}>
+              <div style={{ height: 152, overflow: "hidden", background: WARM }}>
                 <img src={o.img} alt={o.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ padding: "20px 22px 22px" }}>
-                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, marginBottom: 6 }}>{o.title}</h4>
-                <p style={{ color: MUTED, fontSize: "0.85rem", lineHeight: 1.6, marginBottom: 16 }}>{o.desc}</p>
-                <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer" style={{ color: ORANGE, fontWeight: 700, fontSize: "0.83rem" }}>Quero saber mais →</a>
+              <div style={{ padding: "18px 20px 20px" }}>
+                <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
+                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "0.97rem", fontWeight: 600, marginBottom: 5 }}>{o.title}</h4>
+                <p style={{ color: MUTED, fontSize: "0.83rem", lineHeight: 1.6, marginBottom: 12 }}>{o.desc}</p>
+                <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer" style={{ color: ORANGE, fontWeight: 700, fontSize: "0.8rem", textDecoration: "none" }}>Consultar no WhatsApp →</a>
               </div>
             </div>
           ))}
         </Reveal>
 
-        <SectionCTA label="Consultar opções" href={CONTENT.whatsapp} />
+        <SectionCTA label="Consultar opções no WhatsApp" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
