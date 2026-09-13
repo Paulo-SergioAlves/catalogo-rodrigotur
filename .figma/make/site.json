@@ -1,7 +1,9 @@
 {
-  "description": "Streamlines user tasks with an intuitive interface designed to enhance productivity and simplify complex workflows for professionals.",
+  "title": "Catálogo Rodrigo.Tur | Agência de Viagens",
+  "description": "Passagens aéreas nacionais e internacionais, atendimento humano e suporte completo para sua viagem.",
+  "language": "pt-BR",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
