@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import logoImg from "@/imports/images.jpeg";
-import mascotImg from "@/imports/ChatGPT_Image_10_de_ago._de_2026__20_48_33.png";
-import mascot2Img from "@/imports/ChatGPT_Image_10_de_ago._de_2026__20_48_33-1.png";
+import mascotSmImg from "@/imports/mascot-sm.webp";
+import mascotLgImg from "@/imports/mascot-lg.webp";
 
 /* ─── Palette ────────────────────────────────────────────── */
 const NAVY   = "#0D1B3E";
@@ -72,11 +72,12 @@ const NAV = [
 function Logo({ size = 40 }: { size?: number }) {
   return <img src={logoImg} alt="Rodrigo.Tur logo" style={{ width: size, height: size, objectFit: "contain", flexShrink: 0 }} />;
 }
-function Mascot({ size = 64, variant = 1, flip }: { size?: number; variant?: 1 | 2; flip?: boolean }) {
+function Mascot({ size = 64, flip, lazy }: { size?: number; flip?: boolean; lazy?: boolean }) {
   return (
     <img
-      src={variant === 2 ? mascot2Img : mascotImg}
+      src={size > 100 ? mascotLgImg : mascotSmImg}
       alt="Mascote Rodrigo.Tur"
+      loading={lazy ? "lazy" : undefined}
       className="float-anim"
       style={{ width: size, height: size * 1.1, objectFit: "contain", flexShrink: 0, transform: flip ? "scaleX(-1)" : undefined }}
     />
@@ -583,7 +584,7 @@ function Hero() {
 
             {/* Mascote mobile — abaixo dos botões */}
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 24, padding: "14px 16px", background: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.22)", borderRadius: 14 }}>
-              <Mascot size={64} variant={1} />
+              <Mascot size={64} />
               <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0, lineHeight: 1.4 }}>{CONTENT.slogan}</p>
             </div>
 
@@ -635,7 +636,7 @@ function Hero() {
 
             {/* Mascot column */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-              <Mascot size={180} variant={1} />
+              <Mascot size={180} />
               <div style={{ background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 14, padding: "12px 18px", textAlign: "center", maxWidth: 200 }}>
                 <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0 }}>{CONTENT.slogan}</p>
               </div>
@@ -658,11 +659,11 @@ function About() {
           {/* Image */}
           <div style={{ position: "relative", paddingBottom: 20 }}>
             <div style={{ borderRadius: 20, overflow: "hidden", background: WARM, aspectRatio: "4/3" }}>
-              <img src={IMG_ABOUT} alt="Casal no aeroporto" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src={IMG_ABOUT} alt="Casal no aeroporto" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div style={{ position: "absolute", bottom: 0, right: 8, background: ORANGE, color: NAVY, borderRadius: 14, padding: "14px 20px", boxShadow: "0 8px 28px rgba(249,115,22,0.4)" }}>
               <div style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1.3rem", fontWeight: 800, lineHeight: 1 }}>Cadastur</div>
-              <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 3 }}>Agência certificada</div>
+              <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 3 }}>Agência cadastrada</div>
             </div>
           </div>
 
@@ -873,7 +874,7 @@ function Services() {
               onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
               <div style={{ height: 152, overflow: "hidden", background: WARM }}>
-                <img src={o.img} alt={o.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={o.img} alt={o.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div style={{ padding: "18px 20px 20px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
@@ -939,7 +940,7 @@ function Differentials() {
     { Icon: ClockIcon,    title: "Atendimento online todos os dias",         desc: "Disponíveis para você em qualquer dia da semana." },
     { Icon: PlaneIcon,    title: "Suporte antes, durante e depois",          desc: "Acompanhamento completo em toda a jornada de viagem." },
     { Icon: MapPinIcon,   title: "Presencial aos sábados em Queimadas/PB",  desc: "Para quem prefere um contato mais próximo e pessoal." },
-    { Icon: ShieldIcon,   title: "Agência certificada pelo Cadastur",        desc: "Credenciamento que garante segurança e confiança." },
+    { Icon: ShieldIcon,   title: "Agência cadastrada no Cadastur",            desc: "Cadastro no Ministério do Turismo." },
     { Icon: CalendarIcon, title: "Orientação para escolher voos",            desc: "Ajudamos você a encontrar as melhores opções para o seu destino." },
     { Icon: HeadsetIcon,  title: "Comunicação próxima e acessível",          desc: "Falamos a sua língua e estamos no WhatsApp." },
   ];
@@ -1002,7 +1003,7 @@ function Contact() {
         {/* WhatsApp CTA card */}
         <Reveal delay={80} style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "24px 20px" : "32px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
-            <Mascot size={isMobile ? 68 : 88} variant={1} />
+            <Mascot size={isMobile ? 68 : 88} lazy />
             <div>
               <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
               <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
@@ -1088,7 +1089,7 @@ function Footer() {
               </div>
             </div>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", lineHeight: 1.75, marginBottom: 20, maxWidth: 280 }}>{CONTENT.slogan}</p>
-            <Mascot size={52} variant={1} />
+            <Mascot size={52} lazy />
           </div>
 
           {/* Nav */}
