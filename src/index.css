@@ -27,12 +27,44 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--color-cream);
   color: var(--color-navy);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* ─── Scroll offset for fixed header ────────────────────── */
+section[id] {
+  scroll-margin-top: 68px;
+}
+@media (max-width: 1023px) {
+  section[id] { scroll-margin-top: 60px; }
+}
+
+/* ─── Service grid — 3 col → 2 col → 1 col ──────────────── */
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1023px) {
+  .svc-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 767px) {
+  .svc-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Focus visible ──────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* ─── Responsive grid helpers ───────────────────────────── */
@@ -80,4 +112,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .float-anim { animation: none; }
   .fade-up { animation: none; opacity: 1; transform: none; }
+  /* Nav drawer: disable slide transition */
+  .nav-drawer { transition: none !important; }
+  /* Scroll reveal: show immediately */
+  .reveal-item { transition: none !important; opacity: 1 !important; transform: none !important; }
 }

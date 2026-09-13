@@ -85,7 +85,7 @@ function Mascot({ size = 64, variant = 1, flip }: { size?: number; variant?: 1 |
 
 /* ─── Button ─────────────────────────────────────────────── */
 function Btn({
-  children, variant = "primary", href, onClick, small, block,
+  children, variant = "primary", href, onClick, small, block, extraStyle,
 }: {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "outline" | "ghost";
@@ -93,6 +93,7 @@ function Btn({
   onClick?: () => void;
   small?: boolean;
   block?: boolean;
+  extraStyle?: React.CSSProperties;
 }) {
   const vs: Record<string, React.CSSProperties> = {
     primary:   { background: ORANGE, color: NAVY,  boxShadow: "0 4px 18px rgba(249,115,22,0.45)" },
@@ -103,17 +104,23 @@ function Btn({
   const base: React.CSSProperties = {
     display: block ? "flex" : "inline-flex",
     width: block ? "100%" : undefined,
+    boxSizing: "border-box",
     alignItems: "center",
-    justifyContent: block ? "center" : undefined,
+    justifyContent: "center",
+    flexWrap: "wrap",
     gap: 8,
     fontWeight: 700, fontFamily: "inherit", cursor: "pointer",
     transition: "opacity .15s, transform .15s",
     borderRadius: small ? 10 : 14,
-    padding: small ? "9px 18px" : "15px 20px",
+    padding: small ? "10px 16px" : "15px 20px",
     fontSize: small ? "0.85rem" : "0.95rem",
+    minHeight: small ? 40 : 48,
     border: "none", textDecoration: "none",
-    whiteSpace: "nowrap",
+    textAlign: "center",
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
     ...vs[variant],
+    ...extraStyle,
   };
   const hover = (e: React.MouseEvent<HTMLElement>, on: boolean) => {
     (e.currentTarget as HTMLElement).style.opacity = on ? "0.85" : "1";
@@ -129,8 +136,8 @@ function Btn({
 /* ─── Section CTA ────────────────────────────────────────── */
 function SectionCTA({ label, href }: { label: string; href: string }) {
   return (
-    <div style={{ textAlign: "center", marginTop: 52 }}>
-      <Btn href={href} variant="primary">
+    <div style={{ display: "flex", justifyContent: "center", marginTop: 52, padding: "0 4px" }}>
+      <Btn href={href} variant="primary" extraStyle={{ maxWidth: 440 }}>
         <WhatsAppIcon />{label}
       </Btn>
     </div>
@@ -307,17 +314,77 @@ function FloatingWhatsApp() {
 }
 
 /* ─── Nav ────────────────────────────────────────────────── */
+const NAV_BREAKPOINT = 1024;
+
 function Nav({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(NAV_BREAKPOINT);
 
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const drawerRef    = useRef<HTMLDivElement>(null);
+  const closeDrawer  = (returnFocus = true) => {
+    setOpen(false);
+    if (returnFocus) hamburgerRef.current?.focus();
+  };
+
+  /* close when viewport grows past breakpoint */
   useEffect(() => { if (!isMobile) setOpen(false); }, [isMobile]);
+
+  /* body scroll lock */
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    document.body.style.overflow = (isMobile && open) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [open, isMobile]);
+
+  /* inert attribute when closed — keeps keyboard out of the hidden drawer */
+  useEffect(() => {
+    const el = drawerRef.current;
+    if (!el) return;
+    if (open) el.removeAttribute("inert");
+    else      el.setAttribute("inert", "");
+  }, [open]);
+
+  /* focus first link when drawer opens */
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => {
+      const first = drawerRef.current?.querySelector<HTMLElement>("a, button");
+      first?.focus();
+    }, 60);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  /* Esc key */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) closeDrawer();
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* focus trap inside drawer */
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== "Tab" || !drawerRef.current) return;
+      const focusable = Array.from(
+        drawerRef.current.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")
+      ).filter(el => el.offsetParent !== null);
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [open]);
 
   const headerBg = scrolled ? "rgba(13,27,62,0.97)" : "transparent";
+  const navTop   = isMobile ? 60 : 68;
 
   return (
     <>
@@ -331,9 +398,9 @@ function Nav({ scrolled }: { scrolled: boolean }) {
         <div style={{
           maxWidth: 1200, margin: "0 auto",
           padding: "0 20px",
-          height: isMobile ? 60 : 68,
+          height: navTop,
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          overflow: "hidden",
+          gap: 12,
         }}>
           {/* Brand */}
           <a href="#inicio" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
@@ -349,22 +416,28 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           {/* Desktop nav */}
           {!isMobile && (
             <>
-              <nav style={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <nav aria-label="Navegação principal" style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 1, minWidth: 0 }}>
                 {NAV.map(n => (
-                  <a key={n.href} href={n.href} style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.88rem", fontWeight: 500, padding: "8px 14px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s" }}
+                  <a key={n.href} href={n.href}
+                    style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.85rem", fontWeight: 500, padding: "8px 11px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s", whiteSpace: "nowrap" }}
                     onMouseEnter={e => { (e.target as HTMLElement).style.color = "white"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.09)"; }}
                     onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.78)"; (e.target as HTMLElement).style.background = "transparent"; }}
                   >{n.label}</a>
                 ))}
               </nav>
-              <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
+              <div style={{ flexShrink: 0 }}>
+                <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
+              </div>
             </>
           )}
 
           {/* Mobile hamburger */}
           {isMobile && (
             <button
+              ref={hamburgerRef}
               onClick={() => setOpen(v => !v)}
+              aria-expanded={open}
+              aria-controls="nav-drawer"
               aria-label={open ? "Fechar menu" : "Abrir menu"}
               style={{ color: "white", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, cursor: "pointer", padding: "8px 10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
             >
@@ -374,41 +447,58 @@ function Nav({ scrolled }: { scrolled: boolean }) {
         </div>
       </header>
 
-      {/* Overlay */}
+      {/* Overlay — z 299 (above floating WA button at 200) */}
       {isMobile && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 99,
-          background: "rgba(7,18,38,0.55)", backdropFilter: "blur(3px)",
-          opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none",
-          transition: "opacity .25s",
-        }} onClick={() => setOpen(false)} />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "fixed", inset: 0, zIndex: 299,
+            background: "rgba(7,18,38,0.55)", backdropFilter: "blur(3px)",
+            opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none",
+            transition: "opacity .25s",
+          }}
+          onClick={() => closeDrawer()}
+        />
       )}
 
-      {/* Drawer */}
+      {/* Drawer — z 300, always in DOM but inert when closed */}
       {isMobile && (
-        <div style={{
-          position: "fixed", top: 60, right: 0, bottom: 0, zIndex: 100,
-          width: "min(320px, 88vw)",
-          background: `linear-gradient(160deg, #0D1B3E 0%, #071226 100%)`,
-          borderLeft: "1px solid rgba(255,255,255,0.08)",
-          display: "flex", flexDirection: "column",
-          padding: "8px 0 32px",
-          transform: open ? "translateX(0)" : "translateX(105%)",
-          transition: "transform .3s cubic-bezier(.4,0,.2,1)",
-          overflowY: "auto",
-          boxShadow: "-12px 0 48px rgba(0,0,0,0.4)",
-        }}>
+        <div
+          ref={drawerRef}
+          id="nav-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navegação"
+          className="nav-drawer"
+          style={{
+            position: "fixed", top: navTop, right: 0, bottom: 0, zIndex: 300,
+            width: "min(320px, 88vw)",
+            background: `linear-gradient(160deg, #0D1B3E 0%, #071226 100%)`,
+            borderLeft: "1px solid rgba(255,255,255,0.08)",
+            display: "flex", flexDirection: "column",
+            padding: "8px 0 32px",
+            transform: open ? "translateX(0)" : "translateX(105%)",
+            transition: "transform .3s cubic-bezier(.4,0,.2,1)",
+            overflowY: "auto",
+            boxShadow: "-12px 0 48px rgba(0,0,0,0.4)",
+          }}
+        >
+          {/* Close row */}
           <div style={{ display: "flex", justifyContent: "flex-end", padding: "8px 16px 4px" }}>
-            <button onClick={() => setOpen(false)} aria-label="Fechar menu"
-              style={{ color: "rgba(255,255,255,0.6)", background: "rgba(255,255,255,0.07)", border: "none", borderRadius: 8, cursor: "pointer", padding: "8px 10px", display: "flex" }}>
+            <button
+              onClick={() => closeDrawer()}
+              aria-label="Fechar menu"
+              style={{ color: "rgba(255,255,255,0.7)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, cursor: "pointer", padding: "8px 10px", display: "flex", alignItems: "center" }}
+            >
               <XIcon />
             </button>
           </div>
 
-          <nav style={{ flex: 1, display: "flex", flexDirection: "column", padding: "8px 0" }}>
+          {/* Links */}
+          <nav aria-label="Menu mobile" style={{ flex: 1, display: "flex", flexDirection: "column", padding: "8px 0" }}>
             {NAV.map((n, i) => (
               <a key={n.href} href={n.href}
-                onClick={() => setOpen(false)}
+                onClick={() => closeDrawer(false)}
                 style={{
                   display: "flex", alignItems: "center",
                   color: "rgba(255,255,255,0.85)",
@@ -427,9 +517,10 @@ function Nav({ scrolled }: { scrolled: boolean }) {
             ))}
           </nav>
 
+          {/* WhatsApp CTA */}
           <div style={{ padding: "20px 24px 0" }}>
             <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
+              onClick={() => closeDrawer(false)}
               style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, width: "100%", background: ORANGE, color: NAVY, borderRadius: 14, padding: "16px 20px", fontWeight: 800, fontSize: "1rem", textDecoration: "none", boxShadow: "0 4px 18px rgba(249,115,22,0.4)" }}>
               <WhatsAppIcon />Falar no WhatsApp
             </a>
@@ -713,7 +804,7 @@ function ServiceItem({
       <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, lineHeight: 1.35, marginBottom: 8 }}>{title}</h3>
 
       {/* Description */}
-      <p style={{ color: MUTED, fontSize: "0.84rem", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{desc}</p>
+      <p style={{ color: MUTED, fontSize: "0.84rem", lineHeight: 1.6 }}>{desc}</p>
     </div>
   );
 }
@@ -757,8 +848,8 @@ function Services() {
           )}
         </Reveal>
 
-        {/* 6 service items — editorial grid */}
-        <Reveal delay={80} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 16, marginBottom: 72 }}>
+        {/* 6 service items — editorial grid: 1col mobile / 2col tablet / 3col desktop */}
+        <Reveal delay={80} className="svc-grid" style={{ marginBottom: 72 }}>
           {services.map((s, i) => (
             <ServiceItem key={s.title} {...s} index={i} isDesktop={isDesktop} />
           ))}
