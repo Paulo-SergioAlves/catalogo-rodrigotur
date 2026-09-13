@@ -490,8 +490,14 @@ function Hero() {
               </Btn>
             </div>
 
+            {/* Mascote mobile — abaixo dos botões */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 24, padding: "14px 16px", background: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.22)", borderRadius: 14 }}>
+              <Mascot size={64} variant={1} />
+              <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0, lineHeight: 1.4 }}>{CONTENT.slogan}</p>
+            </div>
+
             {/* 4 differentials */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 14px", marginTop: 28, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 14px", marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               {HERO_DIFFS.map(d => (
                 <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 4 }} />
@@ -619,15 +625,12 @@ function Historia() {
       <FlightPath />
       <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
-        <Reveal style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center", marginBottom: 48 }} className="grid-1col-md">
-          <div>
-            <SectionLabel>Nossa História</SectionLabel>
-            <SectionHeading light>{CONTENT.historiaSubtitulo}</SectionHeading>
-            <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: 18, maxWidth: 560 }}>
-              {CONTENT.historiaTexto}
-            </p>
-          </div>
-          {!isMobile && <Mascot size={140} variant={2} />}
+        <Reveal style={{ marginBottom: 48, maxWidth: 680 }}>
+          <SectionLabel>Nossa História</SectionLabel>
+          <SectionHeading light>{CONTENT.historiaSubtitulo}</SectionHeading>
+          <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, marginTop: 18 }}>
+            {CONTENT.historiaTexto}
+          </p>
         </Reveal>
 
         <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm">
@@ -793,7 +796,6 @@ function Differentials() {
           <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(0.95rem, 2.2vw, 1.3rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
-          {!isMobile && <Mascot size={110} variant={2} />}
         </Reveal>
 
         {/* Cards grid — 7 items, no extra CTA card */}
@@ -830,17 +832,19 @@ function Contact() {
           <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 440, lineHeight: 1.7, marginTop: 4 }}>
             Entre em contato por qualquer um dos nossos canais e comece a planejar agora mesmo.
           </p>
-          <div style={{ marginTop: 4 }}><Mascot size={72} variant={2} /></div>
         </Reveal>
 
         {/* WhatsApp CTA card */}
-        <Reveal delay={80} style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "28px 24px" : "36px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20, marginBottom: 20 }}>
-          <div>
-            <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
-            <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
+        <Reveal delay={80} style={{ background: ORANGE, borderRadius: 20, padding: isMobile ? "24px 20px" : "32px 40px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
+            <Mascot size={isMobile ? 68 : 88} variant={1} />
+            <div>
+              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
+              <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
+            </div>
           </div>
           <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
-            style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
+            style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
             <WhatsAppIcon />Falar no WhatsApp
           </a>
         </Reveal>
