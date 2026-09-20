@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import logoImg from "@/imports/images.jpeg";
+import aboutImg from "@/imports/NTHF5716.JPG";
 import mascotSmImg from "@/imports/mascot-sm.webp";
 import mascotLgImg from "@/imports/mascot-lg.webp";
 
@@ -658,8 +659,13 @@ function About() {
 
           {/* Image */}
           <div style={{ position: "relative", paddingBottom: 20 }}>
-            <div style={{ borderRadius: 20, overflow: "hidden", background: WARM, aspectRatio: "4/3" }}>
-              <img src={IMG_ABOUT} alt="Casal no aeroporto" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ borderRadius: 20, overflow: "hidden", background: NAVY, aspectRatio: "1/1" }}>
+              <img
+                src={aboutImg}
+                alt="Rodrigo, proprietário da Rodrigo.Tur, ao lado da identidade visual da agência"
+                loading="lazy"
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+              />
             </div>
             <div style={{ position: "absolute", bottom: 0, right: 8, background: ORANGE, color: NAVY, borderRadius: 14, padding: "14px 20px", boxShadow: "0 8px 28px rgba(249,115,22,0.4)" }}>
               <div style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1.3rem", fontWeight: 800, lineHeight: 1 }}>Cadastur</div>
