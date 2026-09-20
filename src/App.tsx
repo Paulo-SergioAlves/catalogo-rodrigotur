@@ -3,6 +3,9 @@ import logoImg from "@/imports/images.jpeg";
 import aboutImg from "@/imports/NTHF5716.JPG";
 import mascotSmImg from "@/imports/mascot-sm.webp";
 import mascotLgImg from "@/imports/mascot-lg.webp";
+import tipCheckinImg from "@/imports/chekin.jpg";
+import tipAlteracaoImg from "@/imports/alterac_a_o.jpg";
+import tipLembreteImg from "@/imports/lembrete.jpg";
 
 /* ─── Palette ────────────────────────────────────────────── */
 const NAVY   = "#0D1B3E";
@@ -1147,6 +1150,74 @@ function Footer() {
   );
 }
 
+/* ─── Tips ───────────────────────────────────────────────── */
+function Tips() {
+  const isMobile = useIsMobile();
+  const isDesktop = !useIsMobile();
+
+  const cards = [
+    { img: tipCheckinImg,    title: "Check-in",    desc: "Orientação para seu embarque." },
+    { img: tipAlteracaoImg,  title: "Alterações",  desc: "Suporte quando a viagem precisa mudar." },
+    { img: tipLembreteImg,   title: "Lembretes",   desc: "Acompanhamento em cada etapa." },
+  ];
+
+  return (
+    <section id="dicas" style={{ background: WARM, padding: isMobile ? "64px 0" : "88px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+
+        <Reveal style={{ textAlign: "center", marginBottom: 44 }}>
+          <SectionLabel>Dicas para sua viagem</SectionLabel>
+          <SectionHeading>
+            Mais do que passagens —{" "}
+            <em style={{ color: ORANGE, fontStyle: "italic" }}>orientação em cada etapa</em>
+          </SectionHeading>
+        </Reveal>
+
+        <Reveal delay={80} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 20, marginBottom: 44 }}>
+          {cards.map(({ img, title, desc }) => (
+            <div
+              key={title}
+              style={{
+                background: "white",
+                borderRadius: 16,
+                overflow: "hidden",
+                border: `1px solid ${BORDER}`,
+                boxShadow: "0 2px 12px rgba(13,27,62,0.06)",
+                transition: "transform .2s, box-shadow .2s",
+              }}
+              onMouseEnter={e => {
+                if (!isDesktop) return;
+                e.currentTarget.style.transform = "translateY(-4px)";
+                e.currentTarget.style.boxShadow = "0 10px 32px rgba(13,27,62,0.12)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 2px 12px rgba(13,27,62,0.06)";
+              }}
+            >
+              <div style={{ aspectRatio: "1/1", overflow: "hidden", background: NAVY }}>
+                <img
+                  src={img}
+                  alt={title}
+                  loading="lazy"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              </div>
+              <div style={{ padding: "18px 20px 22px" }}>
+                <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
+                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, marginBottom: 6 }}>{title}</h3>
+                <p style={{ color: MUTED, fontSize: "0.85rem", lineHeight: 1.6, margin: 0 }}>{desc}</p>
+              </div>
+            </div>
+          ))}
+        </Reveal>
+
+        <SectionCTA label="Tirar dúvidas no WhatsApp" href={CONTENT.whatsapp} />
+      </div>
+    </section>
+  );
+}
+
 /* ─── Root ───────────────────────────────────────────────── */
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -1166,6 +1237,7 @@ export default function App() {
       <Services />
       <HowItWorks />
       <Differentials />
+      <Tips />
       <Contact />
       <Footer />
     </div>
