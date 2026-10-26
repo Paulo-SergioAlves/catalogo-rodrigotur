@@ -50,7 +50,7 @@ const textSvg = Buffer.from(`<svg width="${W}" height="${H}" xmlns="http://www.w
   <text x="520" y="316"
     font-family="Georgia, 'Times New Roman', serif"
     font-size="44" font-weight="700" font-style="italic"
-    fill="#F97316" text-anchor="middle">vá de Rodrigo.Tur!</text>
+    fill="#F97316" text-anchor="middle">vá de RodrigoTur!</text>
   <!-- supporting line -->
   <text x="520" y="380"
     font-family="Arial, Helvetica, sans-serif"

@@ -30,21 +30,21 @@ const WHATSAPP_NUMBER = "5583993686142";
 const whatsappLink = (message: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 const WHATSAPP_LINKS = {
-  general:        whatsappLink("Olá! Gostaria de falar com a Rodrigo.Tur sobre uma viagem."),
+  general:        whatsappLink("Olá! Gostaria de falar com a RodrigoTur sobre uma viagem."),
   quote:          whatsappLink("Olá! Gostaria de iniciar uma cotação de passagem aérea. Meu destino e período são:"),
-  about:          whatsappLink("Olá! Conheci a Rodrigo.Tur pelo site e gostaria de ajuda para planejar minha viagem."),
-  story:          whatsappLink("Olá! Gostaria de planejar uma viagem com a Rodrigo.Tur. Meu destino e período são:"),
+  about:          whatsappLink("Olá! Conheci a RodrigoTur pelo site e gostaria de ajuda para planejar minha viagem."),
+  story:          whatsappLink("Olá! Gostaria de planejar uma viagem com a RodrigoTur. Meu destino e período são:"),
   process:        whatsappLink("Olá! Gostaria de começar meu atendimento para planejar uma viagem."),
-  differentials:  whatsappLink("Olá! Gostaria de conversar com a Rodrigo.Tur sobre minha próxima viagem."),
+  differentials:  whatsappLink("Olá! Gostaria de conversar com a RodrigoTur sobre minha próxima viagem."),
   tips:           whatsappLink("Olá! Vi as dicas no site e gostaria de tirar uma dúvida sobre minha viagem."),
-  contact:        whatsappLink("Olá! Vim pelo site da Rodrigo.Tur e gostaria de atendimento para planejar uma viagem."),
+  contact:        whatsappLink("Olá! Vim pelo site da RodrigoTur e gostaria de atendimento para planejar uma viagem."),
   national:       whatsappLink("Olá! Gostaria de consultar voos nacionais. Meu destino e período são:"),
   international:  whatsappLink("Olá! Gostaria de consultar voos internacionais. Meu destino e período são:"),
   personalized:   whatsappLink("Olá! Gostaria de um atendimento personalizado para encontrar uma passagem. Meu destino e período são:"),
 };
 
 const CONTENT = {
-  tagline:   "Viaje com confiança, vá de Rodrigo.Tur!",
+  tagline:   "Viaje com confiança, vá de RodrigoTur!",
   subtitulo: "Passagens aéreas nacionais e internacionais com atendimento humano, personalizado e suporte em cada etapa da sua viagem.",
   slogan:    "Eu te ajudo a viajar mais pagando menos.",
 
@@ -84,7 +84,7 @@ const CONTENT = {
   atendimentoOnline:     "Todos os dias",
   atendimentoPresencial: "Sábados — Queimadas/PB",
 
-  sobreTexto: "A Rodrigo.Tur nasceu para tornar a experiência de viajar mais simples, segura e acessível. Mais do que emitir passagens, acompanhamos cada cliente com atendimento humano e personalizado, ajudando desde a escolha do voo até os detalhes da viagem. Nosso compromisso é fazer com que você viaje com confiança.",
+  sobreTexto: "A RodrigoTur nasceu para tornar a experiência de viajar mais simples, segura e acessível. Mais do que emitir passagens, acompanhamos cada cliente com atendimento humano e personalizado, ajudando desde a escolha do voo até os detalhes da viagem. Nosso compromisso é fazer com que você viaje com confiança.",
   missao:  "Tornar as viagens mais simples, seguras e acessíveis com atendimento humano e personalizado.",
   visao:   "Ser a agência de referência em Queimadas/PB, reconhecida pela confiança e qualidade.",
   valores: "Cuidado, transparência, agilidade e compromisso com cada viagem.",
@@ -92,16 +92,16 @@ const CONTENT = {
   historiaSubtitulo: "De um sonho a uma agência de confiança",
   historiaTexto: "O que começou como uma vontade de ajudar pessoas a encontrar melhores caminhos para viajar tornou-se uma agência especializada em passagens aéreas, com suporte completo antes, durante e depois da viagem.",
   historiaTimeline: [
-    { ano: "Início",       titulo: "A ideia nasce",           desc: "O desejo de ajudar pessoas a viajar melhor deu origem à Rodrigo.Tur." },
+    { ano: "Início",       titulo: "A ideia nasce",           desc: "O desejo de ajudar pessoas a viajar melhor deu origem à RodrigoTur." },
     { ano: "Crescimento",  titulo: "Primeiros clientes",      desc: "Atendimento personalizado e indicações construíram a base da agência." },
     { ano: "Consolidação", titulo: "Especialização",          desc: "Foco em passagens aéreas e suporte completo em cada etapa." },
     { ano: "Hoje",         titulo: "Novos horizontes",        desc: "Conectando pessoas a novos destinos com confiança e cuidado." },
   ],
 
-  diferenciaisQuote: "Você não precisa planejar tudo sozinho. A Rodrigo.Tur acompanha cada etapa para que sua viagem seja mais tranquila.",
+  diferenciaisQuote: "Você não precisa planejar tudo sozinho. A RodrigoTur acompanha cada etapa para que sua viagem seja mais tranquila.",
 
-  copyright:   `© ${new Date().getFullYear()} Rodrigo.Tur — Agência de Viagens. Todos os direitos reservados.`,
-  avisoEdicao: "Informações comerciais podem ser atualizadas pela equipe da Rodrigo.Tur",
+  copyright:   `© ${new Date().getFullYear()} RodrigoTur — Agência de Viagens. Todos os direitos reservados.`,
+  avisoEdicao: "Informações comerciais podem ser atualizadas pela equipe da RodrigoTur",
 };
 
 /* ─── Nav ────────────────────────────────────────────────── */
@@ -122,7 +122,7 @@ function Mascot({ size = 64, flip, lazy }: { size?: number; flip?: boolean; lazy
   return (
     <img
       src={size > 100 ? mascotLgImg : mascotSmImg}
-      alt="Mascote Rodrigo.Tur"
+      alt="Mascote RodrigoTur"
       loading={lazy ? "lazy" : undefined}
       className="float-anim"
       style={{ width: size, height: size * 1.1, objectFit: "contain", flexShrink: 0, transform: flip ? "scaleX(-1)" : undefined }}
@@ -605,7 +605,7 @@ function Hero() {
 
             <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.65rem, 7vw, 2.4rem)", lineHeight: 1.18, fontWeight: 600, marginBottom: 14 }}>
               Viaje com confiança,{" "}
-              <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de Rodrigo.Tur!</em>
+              <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
             </h1>
 
             <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.92rem", lineHeight: 1.7, marginBottom: 24 }}>
@@ -651,7 +651,7 @@ function Hero() {
 
               <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", lineHeight: 1.12, fontWeight: 600, marginBottom: 20 }}>
                 Viaje com confiança,{" "}
-                <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de Rodrigo.Tur!</em>
+                <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
               </h1>
 
               <p style={{ color: "rgba(255,255,255,0.68)", fontSize: "1.08rem", lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
@@ -701,7 +701,7 @@ function About() {
             <div style={{ borderRadius: 20, overflow: "hidden", background: NAVY, aspectRatio: "1/1" }}>
               <img
                 src={aboutImg}
-                alt="Rodrigo, proprietário da Rodrigo.Tur, ao lado da identidade visual da agência"
+                alt="Rodrigo, proprietário da RodrigoTur, ao lado da identidade visual da agência"
                 loading="lazy"
                 style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
               />
@@ -714,7 +714,7 @@ function About() {
 
           {/* Text */}
           <div>
-            <SectionLabel>Sobre a Rodrigo.Tur</SectionLabel>
+            <SectionLabel>Sobre a RodrigoTur</SectionLabel>
             <SectionHeading>
               Sua viagem começa{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>com tranquilidade</em>
@@ -732,7 +732,7 @@ function About() {
               ))}
             </ul>
 
-            <Btn href={CONTENT.whatsapp.links.about} variant="primary" small><WhatsAppIcon />Fale com a Rodrigo.Tur</Btn>
+            <Btn href={CONTENT.whatsapp.links.about} variant="primary" small><WhatsAppIcon />Fale com a RodrigoTur</Btn>
           </div>
         </Reveal>
 
@@ -955,7 +955,7 @@ function TravelOptions() {
 function HowItWorks() {
   const isMobile = useIsMobile();
   const steps = [
-    { Icon: WhatsAppIcon, title: "Fale com a Rodrigo.Tur",      desc: "WhatsApp, Instagram, site ou presencial." },
+    { Icon: WhatsAppIcon, title: "Fale com a RodrigoTur",      desc: "WhatsApp, Instagram, site ou presencial." },
     { Icon: PhoneIcon,    title: "Conte o que você precisa",     desc: "Destino, período e preferências." },
     { Icon: HeadsetIcon,  title: "Receba orientação",            desc: "Ajudamos a encontrar as melhores opções." },
     { Icon: LuggageIcon,  title: "Organize os detalhes",         desc: "Bagagem, assento, check-in e alterações." },
