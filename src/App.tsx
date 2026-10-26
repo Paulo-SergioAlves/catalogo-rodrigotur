@@ -160,8 +160,8 @@ function Btn({
     transition: "opacity .15s, transform .15s",
     borderRadius: small ? 10 : 14,
     padding: small ? "10px 16px" : "15px 20px",
-    fontSize: small ? "0.85rem" : "0.95rem",
-    minHeight: small ? 40 : 48,
+    fontSize: "1rem",
+    minHeight: small ? 44 : 48,
     border: "none", textDecoration: "none",
     textAlign: "center",
     wordBreak: "break-word",
@@ -194,7 +194,7 @@ function SectionCTA({ label, href }: { label: string; href: string }) {
 /* ─── Section primitives ─────────────────────────────────── */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: 7, color: ORANGE, border: `1px solid ${ORANGE}`, borderRadius: 999, padding: "5px 14px", marginBottom: 14, fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 7, color: ORANGE, border: `1px solid ${ORANGE}`, borderRadius: 999, padding: "6px 14px", marginBottom: 14, fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
       <span style={{ width: 5, height: 5, borderRadius: "50%", background: ORANGE, flexShrink: 0 }} />
       {children}
     </div>
@@ -460,7 +460,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
               <nav aria-label="Navegação principal" style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 1, minWidth: 0 }}>
                 {NAV.map(n => (
                   <a key={n.href} href={n.href}
-                    style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.85rem", fontWeight: 500, padding: "8px 11px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s", whiteSpace: "nowrap" }}
+                    style={{ color: "rgba(255,255,255,0.78)", fontSize: "0.95rem", fontWeight: 500, padding: "10px 10px", borderRadius: 8, textDecoration: "none", transition: "color .15s, background .15s", whiteSpace: "nowrap" }}
                     onMouseEnter={e => { (e.target as HTMLElement).style.color = "white"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.09)"; }}
                     onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(255,255,255,0.78)"; (e.target as HTMLElement).style.background = "transparent"; }}
                   >{n.label}</a>
@@ -480,7 +480,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
               aria-expanded={open}
               aria-controls="nav-drawer"
               aria-label={open ? "Fechar menu" : "Abrir menu"}
-              style={{ color: "white", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, cursor: "pointer", padding: "8px 10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+              style={{ color: "white", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, cursor: "pointer", minWidth: 44, minHeight: 44, padding: "9px 10px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
             >
               {open ? <XIcon /> : <MenuIcon />}
             </button>
@@ -529,7 +529,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
             <button
               onClick={() => closeDrawer()}
               aria-label="Fechar menu"
-              style={{ color: "rgba(255,255,255,0.7)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, cursor: "pointer", padding: "8px 10px", display: "flex", alignItems: "center" }}
+              style={{ color: "rgba(255,255,255,0.7)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, cursor: "pointer", minWidth: 44, minHeight: 44, padding: "9px 10px", display: "flex", alignItems: "center", justifyContent: "center" }}
             >
               <XIcon />
             </button>
@@ -600,15 +600,15 @@ function Hero() {
             {/* Badge */}
             <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 14px", marginBottom: 18 }}>
               <PlaneIcon />
-              <span style={{ color: ORANGE, fontSize: "0.67rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em" }}>Passagens Aéreas · Queimadas/PB</span>
+              <span style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Passagens Aéreas · Queimadas/PB</span>
             </div>
 
-            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.65rem, 7vw, 2.4rem)", lineHeight: 1.18, fontWeight: 600, marginBottom: 14 }}>
+            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 16 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
             </h1>
 
-            <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.92rem", lineHeight: 1.7, marginBottom: 24 }}>
+            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", lineHeight: 1.65, marginBottom: 26 }}>
               {CONTENT.subtitulo}
             </p>
 
@@ -625,15 +625,15 @@ function Hero() {
             {/* Mascote mobile — abaixo dos botões */}
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 24, padding: "14px 16px", background: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.22)", borderRadius: 14 }}>
               <Mascot size={64} />
-              <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0, lineHeight: 1.4 }}>{CONTENT.slogan}</p>
+              <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.95rem", margin: 0, lineHeight: 1.45 }}>{CONTENT.slogan}</p>
             </div>
 
             {/* 4 differentials */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "9px 14px", marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: isNarrow ? "1fr" : "1fr 1fr", gap: "12px 16px", marginTop: 22, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
               {HERO_DIFFS.map(d => (
                 <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 4 }} />
-                  <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.74rem", lineHeight: 1.4 }}>{d}</span>
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ color: "rgba(255,255,255,0.68)", fontSize: "0.95rem", lineHeight: 1.5 }}>{d}</span>
                 </div>
               ))}
             </div>
@@ -668,7 +668,7 @@ function Hero() {
                 {HERO_DIFFS.map(d => (
                   <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 5 }} />
-                    <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.82rem", lineHeight: 1.45 }}>{d}</span>
+                    <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem", lineHeight: 1.5 }}>{d}</span>
                   </div>
                 ))}
               </div>
@@ -678,7 +678,7 @@ function Hero() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
               <Mascot size={180} />
               <div style={{ background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 14, padding: "12px 18px", textAlign: "center", maxWidth: 200 }}>
-                <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.82rem", margin: 0 }}>{CONTENT.slogan}</p>
+                <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.95rem", margin: 0, lineHeight: 1.45 }}>{CONTENT.slogan}</p>
               </div>
             </div>
           </div>
@@ -725,7 +725,7 @@ function About() {
 
             <ul style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
               {["Cuidado em cada atendimento", "Transparência nas orientações", "Agilidade para encontrar soluções", "Compromisso com cada viagem"].map(v => (
-                <li key={v} style={{ display: "flex", alignItems: "center", gap: 10, color: NAVY, fontSize: "0.9rem" }}>
+                <li key={v} style={{ display: "flex", alignItems: "center", gap: 10, color: NAVY, fontSize: "1rem", lineHeight: 1.5 }}>
                   <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#FFF0E6", color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></span>
                   {v}
                 </li>
@@ -744,8 +744,8 @@ function About() {
             { t: "Valores",txt: CONTENT.valores  },
           ].map(c => (
             <div key={c.t} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 16, padding: 28 }}>
-              <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.05rem", fontWeight: 600, marginBottom: 10 }}>{c.t}</h3>
-              <p style={{ color: MUTED, lineHeight: 1.7, fontSize: "0.88rem" }}>{c.txt}</p>
+              <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.2rem", fontWeight: 600, marginBottom: 10 }}>{c.t}</h3>
+              <p style={{ color: MUTED, lineHeight: 1.7, fontSize: "1rem" }}>{c.txt}</p>
             </div>
           ))}
         </Reveal>
@@ -776,9 +776,9 @@ function Historia() {
               <div style={{ width: 36, height: 36, borderRadius: "50%", background: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
                 <span style={{ color: NAVY, fontWeight: 800, fontSize: "0.8rem" }}>{i + 1}</span>
               </div>
-              <div style={{ color: ORANGE, fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>{item.ano}</div>
-              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "0.95rem", fontWeight: 600, marginBottom: 6 }}>{item.titulo}</h4>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.82rem", lineHeight: 1.6 }}>{item.desc}</p>
+              <div style={{ color: ORANGE, fontSize: "0.82rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{item.ano}</div>
+              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{item.titulo}</h4>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: 1.65 }}>{item.desc}</p>
             </div>
           ))}
         </Reveal>
@@ -847,10 +847,10 @@ function ServiceItem({
       <div className="svc-bar" style={{ width: 24, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 14, transition: "width .25s" }} />
 
       {/* Title */}
-      <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, lineHeight: 1.35, marginBottom: 8 }}>{title}</h3>
+      <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 10 }}>{title}</h3>
 
       {/* Description */}
-      <p style={{ color: MUTED, fontSize: "0.84rem", lineHeight: 1.6 }}>{desc}</p>
+      <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
     </div>
   );
 }
@@ -882,7 +882,7 @@ function Services() {
             </SectionHeading>
           </div>
           {!isMobile && (
-            <p style={{ color: MUTED, fontSize: "0.9rem", lineHeight: 1.65, maxWidth: 280, textAlign: "right", flexShrink: 0 }}>
+            <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, maxWidth: 320, textAlign: "right", flexShrink: 0 }}>
               Passagens nacionais e internacionais com suporte em cada etapa da sua viagem.
             </p>
           )}
@@ -930,10 +930,10 @@ function TravelOptions() {
               <div style={{ height: 152, overflow: "hidden", background: WARM }}>
                 <img src={option.img} alt={option.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
-              <div style={{ padding: "18px 20px 20px" }}>
+              <div style={{ padding: "20px 22px 22px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
-                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.05rem", fontWeight: 600, marginBottom: 7 }}>{option.title}</h3>
-                <p style={{ color: MUTED, fontSize: "0.9rem", lineHeight: 1.6, marginBottom: 16 }}>{option.desc}</p>
+                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.25rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{option.title}</h3>
+                <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, marginBottom: 18 }}>{option.desc}</p>
                 <Btn
                   href={option.whatsapp}
                   variant="primary"
@@ -968,7 +968,7 @@ function HowItWorks() {
         <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
           <SectionLabel>Como funciona</SectionLabel>
           <SectionHeading light>Do primeiro contato <em style={{ color: ORANGE, fontStyle: "italic" }}>ao voo</em></SectionHeading>
-          <p style={{ color: "rgba(255,255,255,0.5)", marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
+          <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "1rem", lineHeight: 1.65, marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
         </Reveal>
         <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
           {steps.map(({ Icon, title, desc }, i) => (
@@ -976,10 +976,10 @@ function HowItWorks() {
               <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(249,115,22,0.14)", border: `2px solid ${ORANGE}`, color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
                 <Icon />
               </div>
-              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "16px 12px" }}>
-                <div style={{ color: ORANGE, fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>0{i + 1}</div>
-                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "0.88rem", fontWeight: 600, marginBottom: 6 }}>{title}</h4>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.78rem", lineHeight: 1.6 }}>{desc}</p>
+              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "20px 18px" }}>
+                <div style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>0{i + 1}</div>
+                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h4>
+                <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
               </div>
             </div>
           ))}
@@ -1018,7 +1018,7 @@ function Differentials() {
         {/* Quote banner */}
         <Reveal delay={100} style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: isMobile ? "28px 24px" : "32px 40px", margin: "32px 0 44px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
           <FlightPath />
-          <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(0.95rem, 2.2vw, 1.3rem)", lineHeight: 1.55, fontStyle: "italic", position: "relative", flex: 1 }}>
+          <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.05rem, 2.2vw, 1.3rem)", lineHeight: 1.6, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
         </Reveal>
@@ -1026,13 +1026,13 @@ function Differentials() {
         {/* Cards grid — 7 items, no extra CTA card */}
         <Reveal delay={150} style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
           {items.map(({ Icon, title, desc }, i) => (
-            <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 22, transition: "box-shadow .2s" }}
+            <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 24, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.08)")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
             >
               <div style={{ color: i === 4 ? NAVY : ORANGE, marginBottom: 12 }}><Icon /></div>
-              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "0.88rem", fontWeight: 600, marginBottom: 6, lineHeight: 1.4 }}>{title}</h4>
-              <p style={{ color: i === 4 ? "rgba(13,27,62,0.7)" : MUTED, fontSize: "0.82rem", lineHeight: 1.6 }}>{desc}</p>
+              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{title}</h4>
+              <p style={{ color: i === 4 ? "rgba(13,27,62,0.75)" : MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
             </div>
           ))}
         </Reveal>
@@ -1054,7 +1054,7 @@ function Contact() {
         <Reveal style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 48, textAlign: "center" }}>
           <SectionLabel>Contato</SectionLabel>
           <SectionHeading light>Vamos planejar sua <em style={{ color: ORANGE, fontStyle: "italic" }}>próxima viagem?</em></SectionHeading>
-          <p style={{ color: "rgba(255,255,255,0.55)", maxWidth: 440, lineHeight: 1.7, marginTop: 4 }}>
+          <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "1rem", maxWidth: 480, lineHeight: 1.7, marginTop: 4 }}>
             Entre em contato por qualquer um dos nossos canais e comece a planejar agora mesmo.
           </p>
         </Reveal>
@@ -1086,16 +1086,16 @@ function Contact() {
               onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
             >
               <span style={{ color: ORANGE }}><c.Icon /></span>
-              <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>{c.label}</div>
-              <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>{c.val}</div>
+              <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>{c.label}</div>
+              <div style={{ color: "white", fontWeight: 600, fontSize: "1rem" }}>{c.val}</div>
             </a>
           ))}
 
           {/* Cadastur — visual badge only, no interaction */}
           <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 10, cursor: "default" }}>
             <span style={{ color: ORANGE }}><ShieldIcon /></span>
-            <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Cadastur</div>
-            <div style={{ color: "white", fontWeight: 600, fontSize: "0.9rem" }}>Agência cadastrada no Cadastur</div>
+            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>Cadastur</div>
+            <div style={{ color: "white", fontWeight: 600, fontSize: "1rem" }}>Agência cadastrada no Cadastur</div>
           </div>
         </Reveal>
 
@@ -1105,9 +1105,9 @@ function Contact() {
             <span style={{ color: ORANGE, flexShrink: 0, marginTop: 2 }}><MapPinIcon /></span>
             <div>
               <div style={{ color: "white", fontWeight: 600, marginBottom: 6 }}>Endereço</div>
-              <div style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.87rem", lineHeight: 1.7 }}>{CONTENT.endereco}</div>
+              <div style={{ color: "rgba(255,255,255,0.62)", fontSize: "1rem", lineHeight: 1.7 }}>{CONTENT.endereco}</div>
               <a href={CONTENT.enderecoMaps} target="_blank" rel="noopener noreferrer"
-                style={{ color: ORANGE, fontSize: "0.82rem", fontWeight: 600, display: "inline-block", marginTop: 10 }}>Como chegar →</a>
+                style={{ color: ORANGE, fontSize: "1rem", fontWeight: 600, display: "inline-flex", alignItems: "center", minHeight: 44, marginTop: 8 }}>Como chegar →</a>
             </div>
           </div>
           <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: 26, display: "flex", gap: 16, alignItems: "flex-start" }}>
@@ -1119,8 +1119,8 @@ function Contact() {
                 { l: "Presencial", v: CONTENT.atendimentoPresencial },
               ].map(h => (
                 <div key={h.l} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-                  <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.87rem" }}>{h.l}</span>
-                  <span style={{ color: ORANGE, fontWeight: 700, fontSize: "0.87rem" }}>{h.v}</span>
+                  <span style={{ color: "rgba(255,255,255,0.62)", fontSize: "1rem" }}>{h.l}</span>
+                  <span style={{ color: ORANGE, fontWeight: 700, fontSize: "1rem" }}>{h.v}</span>
                 </div>
               ))}
             </div>
@@ -1135,7 +1135,7 @@ function Contact() {
 function Footer() {
   const isMobile = useIsMobile();
   return (
-    <footer style={{ background: "#071226", borderTop: "1px solid rgba(255,255,255,0.06)", padding: isMobile ? "48px 0 0" : "64px 0 0" }}>
+    <footer style={{ background: "#071226", borderTop: "1px solid rgba(255,255,255,0.06)", padding: isMobile ? "48px 0 84px" : "64px 0 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 36, marginBottom: 44 }} className="grid-2col-sm grid-1col-xs">
           {/* Brand */}
@@ -1143,15 +1143,15 @@ function Footer() {
             <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
               <Logo width={isMobile ? 150 : 176} />
             </div>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", lineHeight: 1.75, marginBottom: 20, maxWidth: 280 }}>{CONTENT.slogan}</p>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", lineHeight: 1.7, marginBottom: 20, maxWidth: 300 }}>{CONTENT.slogan}</p>
             <Mascot size={52} lazy />
           </div>
 
           {/* Nav */}
           <div>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 16 }}>Navegação</div>
+            <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Navegação</div>
             {NAV.map(n => (
-              <a key={n.href} href={n.href} style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.87rem", marginBottom: 10, textDecoration: "none", transition: "color .15s" }}
+              <a key={n.href} href={n.href} style={{ display: "flex", alignItems: "center", minHeight: 44, color: "rgba(255,255,255,0.62)", fontSize: "1rem", textDecoration: "none", transition: "color .15s" }}
                 onMouseEnter={e => ((e.target as HTMLElement).style.color = "white")}
                 onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.55)")}
               >{n.label}</a>
@@ -1160,15 +1160,15 @@ function Footer() {
 
           {/* Services */}
           <div>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 16 }}>Serviços</div>
+            <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Serviços</div>
             {["Passagens nacionais","Passagens internacionais","Despacho de bagagem","Escolha de assentos","Check-in e alterações","Suporte completo"].map(s => (
-              <div key={s} style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", marginBottom: 8 }}>{s}</div>
+              <div key={s} style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", lineHeight: 1.5, marginBottom: 12 }}>{s}</div>
             ))}
           </div>
 
           {/* Contact */}
           <div>
-            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 16 }}>Contato</div>
+            <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>Contato</div>
             {[
               { Icon: WhatsAppIcon, text: CONTENT.whatsapp.display, href: CONTENT.whatsapp.links.general },
               { Icon: GlobeIcon,    text: CONTENT.siteDisplay,     href: CONTENT.site     },
@@ -1176,7 +1176,7 @@ function Footer() {
               { Icon: MapPinIcon,   text: "Queimadas/PB",          href: CONTENT.enderecoMaps },
             ].map(c => (
               <a key={c.text} href={c.href} target="_blank" rel="noopener noreferrer"
-                style={{ display: "flex", alignItems: "center", gap: 8, color: "rgba(255,255,255,0.55)", fontSize: "0.85rem", marginBottom: 10, textDecoration: "none", transition: "color .15s" }}
+                style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 44, color: "rgba(255,255,255,0.62)", fontSize: "1rem", textDecoration: "none", transition: "color .15s" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "white")}
                 onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
               >
@@ -1188,8 +1188,8 @@ function Footer() {
 
         {/* Bottom bar */}
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "20px 0", display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 8 }}>
-          <span style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.76rem" }}>{CONTENT.copyright}</span>
-          <span style={{ color: "rgba(255,255,255,0.18)", fontSize: "0.72rem" }}>{CONTENT.avisoEdicao}</span>
+          <span style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.875rem", lineHeight: 1.5 }}>{CONTENT.copyright}</span>
+          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", lineHeight: 1.5 }}>{CONTENT.avisoEdicao}</span>
         </div>
       </div>
     </footer>
@@ -1251,8 +1251,8 @@ function Tips() {
               </div>
               <div style={{ padding: "18px 20px 22px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
-                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1rem", fontWeight: 600, marginBottom: 6 }}>{title}</h3>
-                <p style={{ color: MUTED, fontSize: "0.85rem", lineHeight: 1.6, margin: 0 }}>{desc}</p>
+                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h3>
+                <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, margin: 0 }}>{desc}</p>
               </div>
             </div>
           ))}
