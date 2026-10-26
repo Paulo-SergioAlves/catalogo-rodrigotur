@@ -26,13 +26,55 @@ const IMG_AIRPORT = "https://images.unsplash.com/photo-1553619948-505cc1cdc320?w
 /* ══════════════════════════════════════════════════════════
    ✏️  CONTEÚDO EDITÁVEL
    ══════════════════════════════════════════════════════════ */
+const WHATSAPP_NUMBER = "5583993686142";
+const whatsappLink = (message: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+const WHATSAPP_LINKS = {
+  general:        whatsappLink("Olá! Gostaria de falar com a Rodrigo.Tur sobre uma viagem."),
+  quote:          whatsappLink("Olá! Gostaria de iniciar uma cotação de passagem aérea. Meu destino e período são:"),
+  about:          whatsappLink("Olá! Conheci a Rodrigo.Tur pelo site e gostaria de ajuda para planejar minha viagem."),
+  story:          whatsappLink("Olá! Gostaria de planejar uma viagem com a Rodrigo.Tur. Meu destino e período são:"),
+  process:        whatsappLink("Olá! Gostaria de começar meu atendimento para planejar uma viagem."),
+  differentials:  whatsappLink("Olá! Gostaria de conversar com a Rodrigo.Tur sobre minha próxima viagem."),
+  tips:           whatsappLink("Olá! Vi as dicas no site e gostaria de tirar uma dúvida sobre minha viagem."),
+  contact:        whatsappLink("Olá! Vim pelo site da Rodrigo.Tur e gostaria de atendimento para planejar uma viagem."),
+  national:       whatsappLink("Olá! Gostaria de consultar voos nacionais. Meu destino e período são:"),
+  international:  whatsappLink("Olá! Gostaria de consultar voos internacionais. Meu destino e período são:"),
+  personalized:   whatsappLink("Olá! Gostaria de um atendimento personalizado para encontrar uma passagem. Meu destino e período são:"),
+};
+
 const CONTENT = {
   tagline:   "Viaje com confiança, vá de Rodrigo.Tur!",
   subtitulo: "Passagens aéreas nacionais e internacionais com atendimento humano, personalizado e suporte em cada etapa da sua viagem.",
   slogan:    "Eu te ajudo a viajar mais pagando menos.",
 
-  whatsapp:          "https://wa.me/5583993686142",
-  whatsappDisplay:   "(83) 99368-6142",
+  /* WhatsApp: número, mensagens e links ficam centralizados aqui. */
+  whatsapp: {
+    number:  WHATSAPP_NUMBER,
+    display: "(83) 99368-6142",
+    links: WHATSAPP_LINKS,
+  },
+  /* Opções de viagem: edite títulos, descrições, imagens e links neste bloco. */
+  travelOptions: [
+    {
+      title: "Voos nacionais",
+      desc: "Consulte alternativas para viajar pelo Brasil de acordo com seu destino e período.",
+      img: IMG_BEACH,
+      whatsapp: WHATSAPP_LINKS.national,
+    },
+    {
+      title: "Voos internacionais",
+      desc: "Consulte alternativas para seu destino no exterior e receba orientação personalizada.",
+      img: IMG_ISLAND,
+      whatsapp: WHATSAPP_LINKS.international,
+    },
+    {
+      title: "Atendimento personalizado",
+      desc: "Conte onde e quando pretende viajar para receber opções adequadas às suas necessidades.",
+      img: IMG_AIRPORT,
+      whatsapp: WHATSAPP_LINKS.personalized,
+    },
+  ],
   site:              "https://rodrigotur.com.br",
   siteDisplay:       "rodrigotur.com.br",
   instagram:         "https://instagram.com/rodrigotur.pb",
@@ -277,7 +319,7 @@ function FloatingWhatsApp() {
   const size = isMobile ? 56 : "auto";
   return (
     <a
-      href={CONTENT.whatsapp}
+      href={CONTENT.whatsapp.links.general}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale conosco pelo WhatsApp"
@@ -431,7 +473,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
                 ))}
               </nav>
               <div style={{ flexShrink: 0 }}>
-                <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
+                <Btn href={CONTENT.whatsapp.links.general} variant="primary" small><WhatsAppIcon />WhatsApp</Btn>
               </div>
             </>
           )}
@@ -524,7 +566,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
 
           {/* WhatsApp CTA */}
           <div style={{ padding: "20px 24px 0" }}>
-            <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
+            <a href={CONTENT.whatsapp.links.general} target="_blank" rel="noopener noreferrer"
               onClick={() => closeDrawer(false)}
               style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, width: "100%", background: ORANGE, color: NAVY, borderRadius: 14, padding: "16px 20px", fontWeight: 800, fontSize: "1rem", textDecoration: "none", boxShadow: "0 4px 18px rgba(249,115,22,0.4)" }}>
               <WhatsAppIcon />Falar no WhatsApp
@@ -578,10 +620,10 @@ function Hero() {
 
             {/* Buttons: side by side ≥480px, stacked below */}
             <div style={{ display: "grid", gridTemplateColumns: isNarrow ? "1fr" : "1fr 1fr", gap: 10, width: "100%" }}>
-              <Btn href={CONTENT.whatsapp} variant="primary" block>
+              <Btn href={CONTENT.whatsapp.links.quote} variant="primary" block>
                 <WhatsAppIcon />Falar no WhatsApp
               </Btn>
-              <Btn href="#servicos" variant="secondary" block>
+              <Btn href="#opcoes" variant="secondary" block>
                 Planejar minha viagem
               </Btn>
             </div>
@@ -623,8 +665,8 @@ function Hero() {
               </p>
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
-                <Btn href={CONTENT.whatsapp} variant="primary"><WhatsAppIcon />Falar no WhatsApp</Btn>
-                <Btn href="#servicos" variant="secondary">Planejar minha viagem</Btn>
+                <Btn href={CONTENT.whatsapp.links.quote} variant="primary"><WhatsAppIcon />Falar no WhatsApp</Btn>
+                <Btn href="#opcoes" variant="secondary">Planejar minha viagem</Btn>
               </div>
 
               {/* 4 differentials */}
@@ -696,7 +738,7 @@ function About() {
               ))}
             </ul>
 
-            <Btn href={CONTENT.whatsapp} variant="primary" small><WhatsAppIcon />Fale com a Rodrigo.Tur</Btn>
+            <Btn href={CONTENT.whatsapp.links.about} variant="primary" small><WhatsAppIcon />Fale com a Rodrigo.Tur</Btn>
           </div>
         </Reveal>
 
@@ -747,7 +789,7 @@ function Historia() {
           ))}
         </Reveal>
 
-        <SectionCTA label="Planeje sua viagem" href={CONTENT.whatsapp} />
+        <SectionCTA label="Planeje sua viagem" href={CONTENT.whatsapp.links.story} />
       </div>
     </section>
   );
@@ -832,12 +874,6 @@ function Services() {
     { Icon: HeadsetIcon, title: "Suporte completo",         desc: "Atendimento dedicado antes, durante e depois da sua viagem." },
   ];
 
-  const offers = [
-    { title: "Voos nacionais",            desc: "Consulte opções para viajar pelo Brasil.",         img: IMG_BEACH   },
-    { title: "Voos internacionais",       desc: "Seu destino no exterior começa aqui.",             img: IMG_ISLAND  },
-    { title: "Atendimento personalizado", desc: "Para o seu destino, no período que precisar.",     img: IMG_AIRPORT },
-  ];
-
   return (
     <section id="servicos" style={{ background: SVC_BG, padding: isMobile ? "64px 0" : "100px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
@@ -865,37 +901,57 @@ function Services() {
           ))}
         </Reveal>
 
-        {/* Divider */}
-        <div style={{ height: 1, background: `linear-gradient(to right, rgba(13,27,62,0.08), rgba(13,27,62,0.04))`, marginBottom: 56 }} />
+      </div>
+    </section>
+  );
+}
 
-        {/* Opportunities */}
-        <Reveal style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: 12, marginBottom: 28 }}>
-          <div>
-            <SectionLabel>Oportunidades</SectionLabel>
-            <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1.3rem, 3vw, 1.55rem)", fontWeight: 600, marginTop: 4 }}>Consulte as opções disponíveis</h3>
-          </div>
+/* ─── Travel options ─────────────────────────────────────── */
+function TravelOptions() {
+  const isMobile = useIsMobile();
+  const isDesktop = !isMobile;
+
+  return (
+    <section id="opcoes" style={{ background: WARM, padding: isMobile ? "56px 0" : "80px 0" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <Reveal style={{ maxWidth: 720, marginBottom: 32 }}>
+          <SectionLabel>Encontre sua próxima viagem</SectionLabel>
+          <SectionHeading>
+            Comece sua cotação{" "}
+            <em style={{ color: ORANGE, fontStyle: "italic" }}>do seu jeito</em>
+          </SectionHeading>
+          <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.7, marginTop: 14 }}>
+            Destino, período, valores e disponibilidade são consultados diretamente com a agência para encontrar opções adequadas à sua viagem.
+          </p>
         </Reveal>
 
         <Reveal delay={100} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 18 }}>
-          {offers.map(o => (
-            <div key={o.title} style={{ borderRadius: 10, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s, transform .2s" }}
+          {CONTENT.travelOptions.map(option => (
+            <div
+              key={option.title}
+              style={{ borderRadius: 10, overflow: "hidden", background: "white", border: `1px solid ${BORDER}`, transition: "box-shadow .2s, transform .2s" }}
               onMouseEnter={e => { if (isDesktop) { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,27,62,0.1)"; e.currentTarget.style.transform = "translateY(-2px)"; } }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
               <div style={{ height: 152, overflow: "hidden", background: WARM }}>
-                <img src={o.img} alt={o.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={option.img} alt={option.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div style={{ padding: "18px 20px 20px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
-                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "0.97rem", fontWeight: 600, marginBottom: 5 }}>{o.title}</h4>
-                <p style={{ color: MUTED, fontSize: "0.83rem", lineHeight: 1.6, marginBottom: 12 }}>{o.desc}</p>
-                <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer" style={{ color: ORANGE, fontWeight: 700, fontSize: "0.8rem", textDecoration: "none" }}>Consultar no WhatsApp →</a>
+                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.05rem", fontWeight: 600, marginBottom: 7 }}>{option.title}</h3>
+                <p style={{ color: MUTED, fontSize: "0.9rem", lineHeight: 1.6, marginBottom: 16 }}>{option.desc}</p>
+                <Btn
+                  href={option.whatsapp}
+                  variant="primary"
+                  block
+                  extraStyle={{ minHeight: 44, fontSize: "1rem", padding: "11px 12px", flexWrap: "nowrap", whiteSpace: "nowrap" }}
+                >
+                  Consultar no WhatsApp
+                </Btn>
               </div>
             </div>
           ))}
         </Reveal>
-
-        <SectionCTA label="Consultar opções no WhatsApp" href={CONTENT.whatsapp} />
       </div>
     </section>
   );
@@ -935,7 +991,7 @@ function HowItWorks() {
           ))}
         </Reveal>
 
-        <SectionCTA label="Começar meu atendimento" href={CONTENT.whatsapp} />
+        <SectionCTA label="Começar meu atendimento" href={CONTENT.whatsapp.links.process} />
       </div>
     </section>
   );
@@ -987,7 +1043,7 @@ function Differentials() {
           ))}
         </Reveal>
 
-        <SectionCTA label="Falar no WhatsApp" href={CONTENT.whatsapp} />
+        <SectionCTA label="Falar no WhatsApp" href={CONTENT.whatsapp.links.differentials} />
       </div>
     </section>
   );
@@ -1015,10 +1071,10 @@ function Contact() {
             <Mascot size={isMobile ? 68 : 88} lazy />
             <div>
               <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
-              <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsappDisplay}</div>
+              <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsapp.display}</div>
             </div>
           </div>
-          <a href={CONTENT.whatsapp} target="_blank" rel="noopener noreferrer"
+          <a href={CONTENT.whatsapp.links.contact} target="_blank" rel="noopener noreferrer"
             style={{ background: NAVY, color: "white", borderRadius: 12, padding: "14px 28px", fontWeight: 700, fontSize: "1rem", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
             <WhatsAppIcon />Falar no WhatsApp
           </a>
@@ -1124,7 +1180,7 @@ function Footer() {
           <div>
             <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 16 }}>Contato</div>
             {[
-              { Icon: WhatsAppIcon, text: CONTENT.whatsappDisplay, href: CONTENT.whatsapp },
+              { Icon: WhatsAppIcon, text: CONTENT.whatsapp.display, href: CONTENT.whatsapp.links.general },
               { Icon: GlobeIcon,    text: CONTENT.siteDisplay,     href: CONTENT.site     },
               { Icon: InstagramIcon,text: CONTENT.instagramDisplay,href: CONTENT.instagram},
               { Icon: MapPinIcon,   text: "Queimadas/PB",          href: CONTENT.enderecoMaps },
@@ -1212,7 +1268,7 @@ function Tips() {
           ))}
         </Reveal>
 
-        <SectionCTA label="Tirar dúvidas no WhatsApp" href={CONTENT.whatsapp} />
+        <SectionCTA label="Tirar dúvidas no WhatsApp" href={CONTENT.whatsapp.links.tips} />
       </div>
     </section>
   );
@@ -1232,6 +1288,7 @@ export default function App() {
       <FloatingWhatsApp />
       <Nav scrolled={scrolled} />
       <Hero />
+      <TravelOptions />
       <About />
       <Historia />
       <Services />
