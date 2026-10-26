@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import logoImg from "@/imports/images.jpeg";
+import logoImg from "@/imports/logo-rodrigotur.png";
 import aboutImg from "@/imports/NTHF5716.JPG";
 import mascotSmImg from "@/imports/mascot-sm.webp";
 import mascotLgImg from "@/imports/mascot-lg.webp";
@@ -115,8 +115,8 @@ const NAV = [
 ];
 
 /* ─── Brand images ───────────────────────────────────────── */
-function Logo({ size = 40 }: { size?: number }) {
-  return <img src={logoImg} alt="Rodrigo.Tur logo" style={{ width: size, height: size, objectFit: "contain", flexShrink: 0 }} />;
+function Logo({ width = 100 }: { width?: number }) {
+  return <img src={logoImg} alt="RodrigoTur — Agência de Viagens" style={{ width, height: "auto", maxWidth: "100%", objectFit: "contain", display: "block", flexShrink: 0 }} />;
 }
 function Mascot({ size = 64, flip, lazy }: { size?: number; flip?: boolean; lazy?: boolean }) {
   return (
@@ -431,7 +431,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
   }, [open]);
 
   const headerBg = scrolled ? "rgba(13,27,62,0.97)" : "transparent";
-  const navTop   = isMobile ? 60 : 68;
+  const navTop   = isMobile ? 68 : 76;
 
   return (
     <>
@@ -450,14 +450,8 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           gap: 12,
         }}>
           {/* Brand */}
-          <a href="#inicio" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
-            <Logo size={isMobile ? 34 : 42} />
-            <div>
-              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: isMobile ? "0.95rem" : "1.15rem", fontWeight: 700, lineHeight: 1 }}>
-                RODRIGO<span style={{ color: ORANGE }}>TUR</span>
-              </div>
-              <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.58rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>Agência de Viagens</div>
-            </div>
+          <a href="#inicio" aria-label="RodrigoTur — Início" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0 }}>
+            <Logo width={isMobile ? 86 : 98} />
           </a>
 
           {/* Desktop nav */}
@@ -1146,12 +1140,8 @@ function Footer() {
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 36, marginBottom: 44 }} className="grid-2col-sm grid-1col-xs">
           {/* Brand */}
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <Logo size={44} />
-              <div>
-                <div style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.1rem", fontWeight: 700 }}>RODRIGO<span style={{ color: ORANGE }}>TUR</span></div>
-                <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.65rem", letterSpacing: "0.1em" }}>AGÊNCIA DE VIAGENS</div>
-              </div>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: 14 }}>
+              <Logo width={isMobile ? 150 : 176} />
             </div>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", lineHeight: 1.75, marginBottom: 20, maxWidth: 280 }}>{CONTENT.slogan}</p>
             <Mascot size={52} lazy />

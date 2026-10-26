@@ -41,10 +41,10 @@ body {
 
 /* ─── Scroll offset for fixed header ────────────────────── */
 section[id] {
-  scroll-margin-top: 68px;
+  scroll-margin-top: 76px;
 }
 @media (max-width: 1023px) {
-  section[id] { scroll-margin-top: 60px; }
+  section[id] { scroll-margin-top: 68px; }
 }
 
 /* ─── Service grid — 3 col → 2 col → 1 col ──────────────── */
