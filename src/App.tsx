@@ -915,7 +915,7 @@ function TravelOptions() {
             <em style={{ color: ORANGE, fontStyle: "italic" }}>do seu jeito</em>
           </SectionHeading>
           <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.7, marginTop: 14 }}>
-            Destino, período, valores e disponibilidade são consultados diretamente com a agência para encontrar opções adequadas à sua viagem.
+            Destino, período, valores e disponibilidade são consultados diretamente com a agência para encontrar opções adequadas à sua viagem. A pesquisa online abre a plataforma de reservas, enquanto o WhatsApp oferece atendimento personalizado.
           </p>
         </Reveal>
 
@@ -945,6 +945,12 @@ function TravelOptions() {
               </div>
             </div>
           ))}
+        </Reveal>
+
+        <Reveal delay={160} style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+          <Btn href={CONTENT.site} variant="ghost" extraStyle={{ minHeight: 44, padding: "10px 12px", boxShadow: "none" }}>
+            Pesquisar viagens no site oficial
+          </Btn>
         </Reveal>
       </div>
     </section>
