@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import logoImg from "@/imports/logo-rodrigotur.png";
-import aboutImg from "@/imports/NTHF5716.JPG";
+import aboutImg from "@/imports/RodrigoTur-Rodrigo-logo-atual.png";
 import mascotSmImg from "@/imports/mascot-sm.webp";
 import mascotLgImg from "@/imports/mascot-lg.webp";
 import tipCheckinImg from "@/imports/chekin.jpg";
