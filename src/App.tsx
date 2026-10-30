@@ -19,7 +19,7 @@ const BORDER = "#E2E1DC";
 /* ─── Images ─────────────────────────────────────────────── */
 const IMG_HERO    = "https://images.unsplash.com/photo-1606768666853-403c90a981ad?w=1800&h=900&fit=crop&auto=format";
 const IMG_ABOUT   = "https://images.unsplash.com/photo-1687992176093-6417a93fa3d0?w=900&h=700&fit=crop&auto=format";
-const IMG_BEACH   = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&h=480&fit=crop&auto=format";
+const IMG_NATIONAL = "/voos-nacionais.webp";
 const IMG_ISLAND  = "https://images.unsplash.com/photo-1535262412227-85541e910204?w=700&h=480&fit=crop&auto=format";
 const IMG_AIRPORT = "https://images.unsplash.com/photo-1553619948-505cc1cdc320?w=700&h=480&fit=crop&auto=format";
 
@@ -59,7 +59,8 @@ const CONTENT = {
     {
       title: "Voos nacionais",
       desc: "Consulte alternativas para viajar pelo Brasil de acordo com seu destino e período.",
-      img: IMG_BEACH,
+      img: IMG_NATIONAL,
+      imagePosition: "center 78%",
       whatsapp: WHATSAPP_LINKS.national,
     },
     {
@@ -908,7 +909,7 @@ function TravelOptions() {
               onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
               <div style={{ height: isMobile ? 128 : 152, overflow: "hidden", background: WARM }}>
-                <img src={option.img} alt={option.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src={option.img} alt={option.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: option.imagePosition ?? "center" }} />
               </div>
               <div style={{ padding: "20px 22px 22px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
