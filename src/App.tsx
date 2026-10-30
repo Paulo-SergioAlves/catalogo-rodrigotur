@@ -21,7 +21,7 @@ const IMG_HERO    = "https://images.unsplash.com/photo-1606768666853-403c90a981a
 const IMG_ABOUT   = "https://images.unsplash.com/photo-1687992176093-6417a93fa3d0?w=900&h=700&fit=crop&auto=format";
 const IMG_NATIONAL = "/voos-nacionais.webp";
 const IMG_INTERNATIONAL = "/voos-internacionais.webp";
-const IMG_AIRPORT = "https://images.unsplash.com/photo-1553619948-505cc1cdc320?w=700&h=480&fit=crop&auto=format";
+const IMG_SERVICE = "/atendimento-rodrigotur.jpg";
 
 /* ══════════════════════════════════════════════════════════
    ✏️  CONTEÚDO EDITÁVEL
@@ -72,7 +72,8 @@ const CONTENT = {
     {
       title: "Atendimento personalizado",
       desc: "Conte onde e quando pretende viajar para receber opções adequadas às suas necessidades.",
-      img: IMG_AIRPORT,
+      img: IMG_SERVICE,
+      imagePosition: "center 51%",
       whatsapp: WHATSAPP_LINKS.personalized,
     },
   ],
