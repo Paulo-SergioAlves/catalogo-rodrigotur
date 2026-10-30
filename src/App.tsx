@@ -855,7 +855,7 @@ function Services() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
         {/* Header */}
-        <Reveal style={{ display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "flex-end", justifyContent: "space-between", gap: 20, marginBottom: 56 }}>
+        <Reveal style={{ marginBottom: 56 }}>
           <div>
             <SectionLabel>Serviços</SectionLabel>
             <SectionHeading>
@@ -863,11 +863,6 @@ function Services() {
               <em style={{ color: ORANGE, fontStyle: "italic" }}>para viajar bem</em>
             </SectionHeading>
           </div>
-          {!isMobile && (
-            <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, maxWidth: 320, textAlign: "right", flexShrink: 0 }}>
-              Passagens nacionais e internacionais com suporte em cada etapa da sua viagem.
-            </p>
-          )}
         </Reveal>
 
         {/* 6 service items — editorial grid: 1col mobile / 2col tablet / 3col desktop */}
