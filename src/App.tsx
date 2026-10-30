@@ -20,7 +20,7 @@ const BORDER = "#E2E1DC";
 const IMG_HERO    = "https://images.unsplash.com/photo-1606768666853-403c90a981ad?w=1800&h=900&fit=crop&auto=format";
 const IMG_ABOUT   = "https://images.unsplash.com/photo-1687992176093-6417a93fa3d0?w=900&h=700&fit=crop&auto=format";
 const IMG_NATIONAL = "/voos-nacionais.webp";
-const IMG_ISLAND  = "https://images.unsplash.com/photo-1535262412227-85541e910204?w=700&h=480&fit=crop&auto=format";
+const IMG_INTERNATIONAL = "/voos-internacionais.webp";
 const IMG_AIRPORT = "https://images.unsplash.com/photo-1553619948-505cc1cdc320?w=700&h=480&fit=crop&auto=format";
 
 /* ══════════════════════════════════════════════════════════
@@ -66,7 +66,7 @@ const CONTENT = {
     {
       title: "Voos internacionais",
       desc: "Consulte alternativas para seu destino no exterior e receba orientação personalizada.",
-      img: IMG_ISLAND,
+      img: IMG_INTERNATIONAL,
       whatsapp: WHATSAPP_LINKS.international,
     },
     {
