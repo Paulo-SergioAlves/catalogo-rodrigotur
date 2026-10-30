@@ -949,8 +949,8 @@ function HowItWorks() {
     { Icon: WhatsAppIcon, title: "Fale com a RodrigoTur",      desc: "WhatsApp, Instagram, site ou presencial." },
     { Icon: PhoneIcon,    title: "Conte o que você precisa",     desc: "Destino, período e preferências." },
     { Icon: HeadsetIcon,  title: "Receba orientação",            desc: "Ajudamos a encontrar as melhores opções." },
-    { Icon: LuggageIcon,  title: "Organize os detalhes",         desc: "Bagagem, assento, check-in e alterações." },
-    { Icon: PlaneIcon,    title: "Viaje com confiança",          desc: "Acompanhamento antes, durante e depois." },
+    { Icon: LuggageIcon,  title: "Organize os detalhes",         desc: "Revise datas, horários e condições da opção escolhida." },
+    { Icon: PlaneIcon,    title: "Viaje com confiança",          desc: "Embarque com as informações e os canais de contato à mão." },
   ];
   return (
     <section id="como-funciona" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
