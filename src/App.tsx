@@ -582,61 +582,41 @@ const HERO_DIFFS = [
 
 function Hero() {
   const isMobile = useIsMobile();
-  const isNarrow = useIsMobile(480);
 
   return (
-    <section id="inicio" style={{ background: NAVY, minHeight: "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: isMobile ? "flex-start" : "center" }}>
+    <section id="inicio" style={{ background: NAVY, minHeight: isMobile ? "auto" : "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: isMobile ? "flex-start" : "center" }}>
       <div style={{ position: "absolute", inset: 0 }}>
         <img src={IMG_HERO} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, rgba(13,27,62,0.55) 0%, rgba(13,27,62,0.88) 70%, ${NAVY} 100%)` }} />
       </div>
       <FlightPath />
 
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "72px 20px 56px" : "120px 24px 80px", width: "100%" }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "84px 20px 32px" : "120px 24px 80px", width: "100%" }}>
 
         {/* ── Mobile: single column, top-aligned ── */}
         {isMobile && (
           <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "left" }}>
             {/* Badge */}
-            <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "6px 14px", marginBottom: 18 }}>
+            <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "5px 12px", marginBottom: 14 }}>
               <PlaneIcon />
               <span style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Passagens Aéreas · Queimadas/PB</span>
             </div>
 
-            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 16 }}>
+            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 12 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
             </h1>
 
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", lineHeight: 1.65, marginBottom: 26 }}>
-              {CONTENT.subtitulo}
+            <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "1rem", lineHeight: 1.5, marginBottom: 20 }}>
+              Passagens aéreas nacionais e internacionais com atendimento humano.
             </p>
 
-            {/* Buttons: side by side ≥480px, stacked below */}
-            <div style={{ display: "grid", gridTemplateColumns: isNarrow ? "1fr" : "1fr 1fr", gap: 10, width: "100%" }}>
-              <Btn href={CONTENT.whatsapp.links.quote} variant="primary" block>
-                <WhatsAppIcon />Falar no WhatsApp
-              </Btn>
-              <Btn href="#opcoes" variant="secondary" block>
-                Planejar minha viagem
-              </Btn>
-            </div>
-
-            {/* Mascote mobile — abaixo dos botões */}
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 24, padding: "14px 16px", background: "rgba(249,115,22,0.10)", border: "1px solid rgba(249,115,22,0.22)", borderRadius: 14 }}>
-              <Mascot size={64} />
-              <p style={{ color: ORANGE, fontWeight: 700, fontSize: "0.95rem", margin: 0, lineHeight: 1.45 }}>{CONTENT.slogan}</p>
-            </div>
-
-            {/* 4 differentials */}
-            <div style={{ display: "grid", gridTemplateColumns: isNarrow ? "1fr" : "1fr 1fr", gap: "12px 16px", marginTop: 22, paddingTop: 22, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-              {HERO_DIFFS.map(d => (
-                <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: ORANGE, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ color: "rgba(255,255,255,0.68)", fontSize: "0.95rem", lineHeight: 1.5 }}>{d}</span>
-                </div>
-              ))}
-            </div>
+            <Btn href={CONTENT.whatsapp.links.quote} variant="primary" block>
+              <WhatsAppIcon />Falar no WhatsApp
+            </Btn>
+            <Btn href="#opcoes" variant="secondary" block small extraStyle={{ marginTop: 8, background: "transparent", border: "none", boxShadow: "none", textDecoration: "underline", textUnderlineOffset: 4 }}>
+              Ver opções de viagem
+            </Btn>
           </div>
         )}
 
@@ -906,16 +886,16 @@ function TravelOptions() {
   const isDesktop = !isMobile;
 
   return (
-    <section id="opcoes" style={{ background: WARM, padding: isMobile ? "56px 0" : "80px 0" }}>
+    <section id="opcoes" style={{ background: WARM, padding: isMobile ? "40px 0 56px" : "80px 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <Reveal style={{ maxWidth: 720, marginBottom: 32 }}>
+        <Reveal style={{ maxWidth: 720, marginBottom: isMobile ? 24 : 32 }}>
           <SectionLabel>Encontre sua próxima viagem</SectionLabel>
           <SectionHeading>
             Comece sua cotação{" "}
             <em style={{ color: ORANGE, fontStyle: "italic" }}>do seu jeito</em>
           </SectionHeading>
           <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.7, marginTop: 14 }}>
-            Destino, período, valores e disponibilidade são consultados diretamente com a agência para encontrar opções adequadas à sua viagem. A pesquisa online abre a plataforma de reservas, enquanto o WhatsApp oferece atendimento personalizado.
+            {isMobile ? "Escolha uma opção e informe destino e período para consultar a agência." : "Destino, período, valores e disponibilidade são consultados diretamente com a agência para encontrar opções adequadas à sua viagem. A pesquisa online abre a plataforma de reservas, enquanto o WhatsApp oferece atendimento personalizado."}
           </p>
         </Reveal>
 
@@ -927,7 +907,7 @@ function TravelOptions() {
               onMouseEnter={e => { if (isDesktop) { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,27,62,0.1)"; e.currentTarget.style.transform = "translateY(-2px)"; } }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
             >
-              <div style={{ height: 152, overflow: "hidden", background: WARM }}>
+              <div style={{ height: isMobile ? 128 : 152, overflow: "hidden", background: WARM }}>
                 <img src={option.img} alt={option.title} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div style={{ padding: "20px 22px 22px" }}>
