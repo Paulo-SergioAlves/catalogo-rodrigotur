@@ -927,7 +927,12 @@ function TravelOptions() {
           ))}
         </Reveal>
 
-        <Reveal delay={160} style={{ display: "flex", justifyContent: "center", marginTop: 24 }}>
+        <Reveal delay={160} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, marginTop: 24 }}>
+          {isMobile && (
+            <p style={{ color: MUTED, fontSize: "0.95rem", lineHeight: 1.5, textAlign: "center", maxWidth: 420, margin: 0 }}>
+              No site oficial, pesquise viagens por conta própria. Pelo WhatsApp, receba atendimento personalizado.
+            </p>
+          )}
           <Btn href={CONTENT.site} variant="ghost" extraStyle={{ minHeight: 44, padding: "10px 12px", boxShadow: "none" }}>
             Pesquisar viagens no site oficial
           </Btn>
