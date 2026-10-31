@@ -111,6 +111,15 @@ section[id] {
   animation: fadeUp 0.7s ease forwards;
 }
 
+/* Mobile: content and actions should be readable as soon as they enter view. */
+@media (max-width: 767px) {
+  .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .float-anim { animation: none; }
   .fade-up { animation: none; opacity: 1; transform: none; }

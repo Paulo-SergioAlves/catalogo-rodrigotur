@@ -272,9 +272,11 @@ function useIsMobile(breakpoint = 768) {
 /* ─── useReveal (IntersectionObserver scroll reveal) ────── */
 function useReveal(rootMargin = "-40px") {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() =>
+    window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setVisible(true);
       return;
     }
@@ -299,7 +301,7 @@ function Reveal({
   return (
     <div
       ref={ref}
-      className={className}
+      className={["reveal-item", className].filter(Boolean).join(" ")}
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(22px)",
@@ -608,7 +610,7 @@ function Hero() {
 
         {/* ── Mobile: single column, top-aligned ── */}
         {isMobile && (
-          <div className="fade-up" style={{ display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "left" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "left" }}>
             {/* Badge */}
             <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "5px 12px", marginBottom: 14 }}>
               <PlaneIcon />
