@@ -857,7 +857,7 @@ function Services() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
 
         {/* Header */}
-        <Reveal style={{ marginBottom: 56 }}>
+        <Reveal style={{ marginBottom: isMobile ? 28 : 56 }}>
           <div>
             <SectionLabel>Serviços</SectionLabel>
             <SectionHeading>
@@ -867,12 +867,27 @@ function Services() {
           </div>
         </Reveal>
 
-        {/* 6 service items — editorial grid: 1col mobile / 2col tablet / 3col desktop */}
-        <Reveal delay={80} className="svc-grid" style={{ marginBottom: 72 }}>
-          {services.map((s, i) => (
-            <ServiceItem key={s.title} {...s} index={i} isDesktop={isDesktop} />
-          ))}
-        </Reveal>
+        {isMobile ? (
+          <Reveal delay={80} style={{ marginBottom: 40 }}>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", borderTop: `1px solid ${BORDER}` }}>
+              {services.map(({ Icon, title, desc }) => (
+                <li key={title} style={{ display: "flex", alignItems: "flex-start", gap: 16, padding: "18px 0", borderBottom: `1px solid ${BORDER}` }}>
+                  <span aria-hidden="true" style={{ color: ORANGE, display: "flex", flexShrink: 0, marginTop: 3 }}><Icon /></span>
+                  <div style={{ minWidth: 0 }}>
+                    <h3 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.12rem", fontWeight: 600, lineHeight: 1.35, marginBottom: 4 }}>{title}</h3>
+                    <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.5, margin: 0 }}>{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        ) : (
+          <Reveal delay={80} className="svc-grid" style={{ marginBottom: 72 }}>
+            {services.map((s, i) => (
+              <ServiceItem key={s.title} {...s} index={i} isDesktop={isDesktop} />
+            ))}
+          </Reveal>
+        )}
 
       </div>
     </section>
@@ -955,25 +970,41 @@ function HowItWorks() {
     <section id="como-funciona" style={{ background: NAVY, position: "relative", overflow: "hidden", padding: isMobile ? "64px 0" : "96px 0" }}>
       <FlightPath />
       <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <Reveal style={{ textAlign: "center", marginBottom: 48 }}>
+        <Reveal style={{ textAlign: "center", marginBottom: isMobile ? 32 : 48 }}>
           <SectionLabel>Como funciona</SectionLabel>
           <SectionHeading light>Do primeiro contato <em style={{ color: ORANGE, fontStyle: "italic" }}>ao voo</em></SectionHeading>
           <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "1rem", lineHeight: 1.65, marginTop: 14 }}>Um processo simples, claro e com acompanhamento em cada etapa.</p>
         </Reveal>
-        <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
-          {steps.map(({ Icon, title, desc }, i) => (
-            <div key={title} style={{ textAlign: "center" }}>
-              <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(249,115,22,0.14)", border: `2px solid ${ORANGE}`, color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                <Icon />
+        {isMobile ? (
+          <Reveal delay={120}>
+            <ol style={{ margin: 0, padding: 0, listStyle: "none", borderTop: "1px solid rgba(255,255,255,0.16)" }}>
+              {steps.map(({ title, desc }, i) => (
+                <li key={title} style={{ display: "flex", alignItems: "flex-start", gap: 16, padding: "18px 0", borderBottom: "1px solid rgba(255,255,255,0.16)" }}>
+                  <span style={{ width: 36, height: 36, flexShrink: 0, borderRadius: "50%", background: ORANGE, color: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.9rem", fontWeight: 700 }}>{i + 1}</span>
+                  <div style={{ minWidth: 0 }}>
+                    <h4 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.35, marginBottom: 4 }}>{title}</h4>
+                    <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "1rem", lineHeight: 1.5, margin: 0 }}>{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        ) : (
+          <Reveal delay={120} style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }} className="grid-2col-sm grid-1col-xs">
+            {steps.map(({ Icon, title, desc }, i) => (
+              <div key={title} style={{ textAlign: "center" }}>
+                <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(249,115,22,0.14)", border: `2px solid ${ORANGE}`, color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                  <Icon />
+                </div>
+                <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "20px 18px" }}>
+                  <div style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>0{i + 1}</div>
+                  <h4 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h4>
+                  <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
+                </div>
               </div>
-              <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "20px 18px" }}>
-                <div style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>0{i + 1}</div>
-                <h4 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h4>
-                <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
-              </div>
-            </div>
-          ))}
-        </Reveal>
+            ))}
+          </Reveal>
+        )}
 
         <SectionCTA label="Começar meu atendimento" href={CONTENT.whatsapp.links.process} />
       </div>
