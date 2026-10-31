@@ -8,6 +8,7 @@
   --color-navy: #0D1B3E;
   --color-navy-deep: #071226;
   --color-navy-mid: #1E3561;
+  --color-navy-secondary: #162B5C;
   --color-gold: #F97316;
   --color-gold-light: #FB923C;
   --color-gold-pale: #FFF0E6;
@@ -15,6 +16,7 @@
   --color-sky-light: #EAF3FB;
   --color-cream: #FAFAF8;
   --color-warm-gray: #F3F2EE;
+  --color-service-bg: #F3F5FB;
   --color-muted: #6B7280;
   --color-border: #E2E1DC;
 }
@@ -62,7 +64,7 @@ section[id] {
 
 /* ─── Focus visible ──────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid #F97316;
+  outline: 2px solid var(--color-gold);
   outline-offset: 3px;
   border-radius: 4px;
 }

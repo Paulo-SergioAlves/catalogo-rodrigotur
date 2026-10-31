@@ -7,14 +7,16 @@ import tipCheckinImg from "@/imports/chekin.jpg";
 import tipAlteracaoImg from "@/imports/alterac_a_o.jpg";
 import tipLembreteImg from "@/imports/lembrete.jpg";
 
-/* ─── Palette ────────────────────────────────────────────── */
-const NAVY   = "#0D1B3E";
-const NAVY2  = "#162B5C";
-const ORANGE = "#F97316";
-const CREAM  = "#FAFAF8";
-const WARM   = "#F3F2EE";
-const MUTED  = "#6B7280";
-const BORDER = "#E2E1DC";
+/* ─── Brand tokens — values live in index.css ─────────── */
+const NAVY   = "var(--color-navy)";
+const NAVY2  = "var(--color-navy-secondary)";
+const ORANGE = "var(--color-gold)";
+const CREAM  = "var(--color-cream)";
+const WARM   = "var(--color-warm-gray)";
+const MUTED  = "var(--color-muted)";
+const BORDER = "var(--color-border)";
+const DISPLAY_FONT = "var(--font-display)";
+const BODY_FONT = "var(--font-sans)";
 
 /* ─── Images ─────────────────────────────────────────────── */
 const IMG_HERO    = "https://images.unsplash.com/photo-1606768666853-403c90a981ad?w=1800&h=900&fit=crop&auto=format";
@@ -204,7 +206,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 function SectionHeading({ children, light }: { children: React.ReactNode; light?: boolean }) {
   return (
-    <h2 style={{ fontFamily: "Fraunces, Georgia, serif", color: light ? "white" : NAVY, fontSize: "clamp(1.7rem, 4vw, 2.9rem)", fontWeight: 600, lineHeight: 1.18 }}>
+    <h2 style={{ fontFamily: DISPLAY_FONT, color: light ? "white" : NAVY, fontSize: "clamp(1.7rem, 4vw, 2.9rem)", fontWeight: 600, lineHeight: 1.18 }}>
       {children}
     </h2>
   );
@@ -342,7 +344,7 @@ function FloatingWhatsApp() {
         padding: isMobile ? 0 : "13px 22px",
         fontWeight: 700,
         fontSize: "0.9rem",
-        fontFamily: "Outfit, system-ui, sans-serif",
+        fontFamily: BODY_FONT,
         textDecoration: "none",
         boxShadow: "0 4px 24px rgba(249,115,22,0.45), 0 2px 8px rgba(0,0,0,0.15)",
         opacity: entered ? 1 : 0,
@@ -516,7 +518,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           style={{
             position: "fixed", top: navTop, right: 0, bottom: 0, zIndex: 300,
             width: "min(320px, 88vw)",
-            background: `linear-gradient(160deg, #0D1B3E 0%, #071226 100%)`,
+            background: `linear-gradient(160deg, var(--color-navy) 0%, var(--color-navy-deep) 100%)`,
             borderLeft: "1px solid rgba(255,255,255,0.08)",
             display: "flex", flexDirection: "column",
             padding: "8px 0 32px",
@@ -604,7 +606,7 @@ function Hero() {
               <span style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Passagens Aéreas · Queimadas/PB</span>
             </div>
 
-            <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 12 }}>
+            <h1 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 12 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
             </h1>
@@ -631,7 +633,7 @@ function Hero() {
                 <span style={{ color: ORANGE, fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Passagens Aéreas · Queimadas/PB</span>
               </div>
 
-              <h1 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", lineHeight: 1.12, fontWeight: 600, marginBottom: 20 }}>
+              <h1 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", lineHeight: 1.12, fontWeight: 600, marginBottom: 20 }}>
                 Viaje com confiança,{" "}
                 <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
               </h1>
@@ -689,7 +691,7 @@ function About() {
               />
             </div>
             <div style={{ position: "absolute", bottom: 0, right: 8, background: ORANGE, color: NAVY, borderRadius: 14, padding: "14px 20px", boxShadow: "0 8px 28px rgba(249,115,22,0.4)" }}>
-              <div style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "1.3rem", fontWeight: 800, lineHeight: 1 }}>Cadastur</div>
+              <div style={{ fontFamily: DISPLAY_FONT, fontSize: "1.3rem", fontWeight: 800, lineHeight: 1 }}>Cadastur</div>
               <div style={{ fontSize: "0.7rem", fontWeight: 600, marginTop: 3 }}>Agência cadastrada</div>
             </div>
           </div>
@@ -708,7 +710,7 @@ function About() {
             <ul style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
               {["Cuidado em cada atendimento", "Transparência nas orientações", "Agilidade para encontrar soluções", "Compromisso com cada viagem"].map(v => (
                 <li key={v} style={{ display: "flex", alignItems: "center", gap: 10, color: NAVY, fontSize: "1rem", lineHeight: 1.5 }}>
-                  <span style={{ width: 22, height: 22, borderRadius: "50%", background: "#FFF0E6", color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></span>
+                  <span style={{ width: 22, height: 22, borderRadius: "50%", background: "var(--color-gold-pale)", color: ORANGE, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></span>
                   {v}
                 </li>
               ))}
@@ -726,7 +728,7 @@ function About() {
             { t: "Valores",txt: CONTENT.valores  },
           ].map(c => (
             <div key={c.t} style={{ background: "white", border: `1px solid ${BORDER}`, borderRadius: 16, padding: 28 }}>
-              <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.2rem", fontWeight: 600, marginBottom: 10 }}>{c.t}</h3>
+              <h3 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.2rem", fontWeight: 600, marginBottom: 10 }}>{c.t}</h3>
               <p style={{ color: MUTED, lineHeight: 1.7, fontSize: "1rem" }}>{c.txt}</p>
             </div>
           ))}
@@ -759,7 +761,7 @@ function Historia() {
                 <span style={{ color: NAVY, fontWeight: 800, fontSize: "0.8rem" }}>{i + 1}</span>
               </div>
               <div style={{ color: ORANGE, fontSize: "0.82rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{item.ano}</div>
-              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{item.titulo}</h4>
+              <h4 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{item.titulo}</h4>
               <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: 1.65 }}>{item.desc}</p>
             </div>
           ))}
@@ -772,7 +774,7 @@ function Historia() {
 }
 
 /* ─── Services ───────────────────────────────────────────── */
-const SVC_BG = "#F3F5FB"; /* cool-tinted white — different from WARM */
+const SVC_BG = "var(--color-service-bg)"; /* cool-tinted white — different from WARM */
 
 function ServiceItem({
   Icon, title, desc, index, isDesktop,
@@ -819,7 +821,7 @@ function ServiceItem({
     >
       {/* Number + Icon row */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
-        <span style={{ fontFamily: "Fraunces, Georgia, serif", fontSize: "0.7rem", color: "rgba(13,27,62,0.25)", fontWeight: 700, letterSpacing: "0.15em" }}>{num}</span>
+        <span style={{ fontFamily: DISPLAY_FONT, fontSize: "0.7rem", color: "rgba(13,27,62,0.25)", fontWeight: 700, letterSpacing: "0.15em" }}>{num}</span>
         <span className="svc-icon" style={{ color: NAVY, opacity: 0.6, transition: "color .2s, opacity .2s", display: "flex" }}>
           <Icon />
         </span>
@@ -829,7 +831,7 @@ function ServiceItem({
       <div className="svc-bar" style={{ width: 24, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 14, transition: "width .25s" }} />
 
       {/* Title */}
-      <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 10 }}>{title}</h3>
+      <h3 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 10 }}>{title}</h3>
 
       {/* Description */}
       <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
@@ -909,7 +911,7 @@ function TravelOptions() {
               </div>
               <div style={{ padding: "20px 22px 22px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
-                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.25rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{option.title}</h3>
+                <h3 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.25rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{option.title}</h3>
                 <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, marginBottom: 18 }}>{option.desc}</p>
                 <Btn
                   href={option.whatsapp}
@@ -966,7 +968,7 @@ function HowItWorks() {
               </div>
               <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: 14, padding: "20px 18px" }}>
                 <div style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>0{i + 1}</div>
-                <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h4>
+                <h4 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h4>
                 <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
               </div>
             </div>
@@ -1006,7 +1008,7 @@ function Differentials() {
         {/* Quote banner */}
         <Reveal delay={100} style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, borderRadius: 18, padding: isMobile ? "28px 24px" : "32px 40px", margin: "32px 0 44px", position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: 32 }}>
           <FlightPath />
-          <p style={{ fontFamily: "Fraunces, Georgia, serif", color: "white", fontSize: "clamp(1.05rem, 2.2vw, 1.3rem)", lineHeight: 1.6, fontStyle: "italic", position: "relative", flex: 1 }}>
+          <p style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "clamp(1.05rem, 2.2vw, 1.3rem)", lineHeight: 1.6, fontStyle: "italic", position: "relative", flex: 1 }}>
             "{CONTENT.diferenciaisQuote}"
           </p>
         </Reveal>
@@ -1019,7 +1021,7 @@ function Differentials() {
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
             >
               <div style={{ color: i === 4 ? NAVY : ORANGE, marginBottom: 12 }}><Icon /></div>
-              <h4 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{title}</h4>
+              <h4 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{title}</h4>
               <p style={{ color: i === 4 ? "rgba(13,27,62,0.75)" : MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
             </div>
           ))}
@@ -1052,7 +1054,7 @@ function Contact() {
           <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
             <Mascot size={isMobile ? 68 : 88} lazy />
             <div>
-              <div style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
+              <div style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "clamp(1rem,2.5vw,1.5rem)", fontWeight: 700 }}>WhatsApp — o canal mais rápido</div>
               <div style={{ color: "rgba(13,27,62,0.7)", fontSize: "1.05rem", fontWeight: 600, marginTop: 4 }}>{CONTENT.whatsapp.display}</div>
             </div>
           </div>
@@ -1123,7 +1125,7 @@ function Contact() {
 function Footer() {
   const isMobile = useIsMobile();
   return (
-    <footer style={{ background: "#071226", borderTop: "1px solid rgba(255,255,255,0.06)", padding: isMobile ? "48px 0 84px" : "64px 0 0" }}>
+    <footer style={{ background: "var(--color-navy-deep)", borderTop: "1px solid rgba(255,255,255,0.06)", padding: isMobile ? "48px 0 84px" : "64px 0 0" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 36, marginBottom: 44 }} className="grid-2col-sm grid-1col-xs">
           {/* Brand */}
@@ -1239,7 +1241,7 @@ function Tips() {
               </div>
               <div style={{ padding: "18px 20px 22px" }}>
                 <div style={{ width: 20, height: 2, background: ORANGE, borderRadius: 1, marginBottom: 10 }} />
-                <h3 style={{ fontFamily: "Fraunces, Georgia, serif", color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h3>
+                <h3 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.18rem", fontWeight: 600, lineHeight: 1.4, marginBottom: 8 }}>{title}</h3>
                 <p style={{ color: MUTED, fontSize: "1rem", lineHeight: 1.65, margin: 0 }}>{desc}</p>
               </div>
             </div>
@@ -1262,7 +1264,7 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "Outfit, system-ui, sans-serif", overflowX: "hidden" }}>
+    <div style={{ fontFamily: BODY_FONT, overflowX: "hidden" }}>
       <FloatingWhatsApp />
       <Nav scrolled={scrolled} />
       <Hero />
