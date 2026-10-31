@@ -121,8 +121,15 @@ section[id] {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
   .float-anim { animation: none; }
   .fade-up { animation: none; opacity: 1; transform: none; }
+  .floating-whatsapp { opacity: 1 !important; transform: none !important; }
   /* Nav drawer: disable slide transition */
   .nav-drawer { transition: none !important; }
   /* Scroll reveal: show immediately */

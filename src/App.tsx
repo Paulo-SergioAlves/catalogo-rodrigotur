@@ -321,12 +321,17 @@ function FloatingWhatsApp() {
   const [entered, setEntered] = useState(false);
   const isMobile = useIsMobile(NAV_BREAKPOINT);
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setEntered(true);
+      return;
+    }
     const t = setTimeout(() => setEntered(true), 700);
     return () => clearTimeout(t);
   }, []);
   if (isMobile) return null;
   return (
     <a
+      className="floating-whatsapp"
       href={CONTENT.whatsapp.links.general}
       target="_blank"
       rel="noopener noreferrer"
