@@ -1016,13 +1016,10 @@ function HowItWorks() {
 function Differentials() {
   const isMobile = useIsMobile();
   const items = [
-    { Icon: PersonIcon,   title: "Atendimento humano e personalizado",       desc: "Cada cliente recebe atenção individual e orientação dedicada." },
-    { Icon: ClockIcon,    title: "Atendimento online todos os dias",         desc: "Disponíveis para você em qualquer dia da semana." },
-    { Icon: PlaneIcon,    title: "Suporte antes, durante e depois",          desc: "Acompanhamento completo em toda a jornada de viagem." },
-    { Icon: MapPinIcon,   title: "Presencial aos sábados em Queimadas/PB",  desc: "Para quem prefere um contato mais próximo e pessoal." },
-    { Icon: ShieldIcon,   title: "Agência cadastrada no Cadastur",            desc: "Cadastro no Ministério do Turismo." },
-    { Icon: CalendarIcon, title: "Orientação para escolher voos",            desc: "Ajudamos você a encontrar as melhores opções para o seu destino." },
-    { Icon: HeadsetIcon,  title: "Comunicação próxima e acessível",          desc: "Falamos a sua língua e estamos no WhatsApp." },
+    { Icon: PersonIcon, title: "Atendimento humano e personalizado", desc: "Orientação individual para encontrar opções adequadas à sua viagem.", featured: false },
+    { Icon: ClockIcon, title: "Atendimento online e presencial", desc: "Online todos os dias e presencial aos sábados em Queimadas/PB.", featured: false },
+    { Icon: ShieldIcon, title: "Agência cadastrada no Cadastur", desc: "Cadastro no Ministério do Turismo.", featured: true },
+    { Icon: PlaneIcon, title: "Suporte em cada etapa", desc: "Orientação antes, durante e depois da viagem.", featured: false },
   ];
 
   return (
@@ -1044,16 +1041,16 @@ function Differentials() {
           </p>
         </Reveal>
 
-        {/* Cards grid — 7 items, no extra CTA card */}
+        {/* Quatro diferenciais, sem repetir os serviços já apresentados acima. */}
         <Reveal delay={150} style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }} className="grid-2col-sm grid-1col-xs">
-          {items.map(({ Icon, title, desc }, i) => (
-            <div key={title} style={{ background: i === 4 ? ORANGE : "white", border: i === 4 ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 24, transition: "box-shadow .2s" }}
+          {items.map(({ Icon, title, desc, featured }) => (
+            <div key={title} style={{ background: featured ? ORANGE : "white", border: featured ? "none" : `1px solid ${BORDER}`, borderRadius: 16, padding: 24, transition: "box-shadow .2s" }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.08)")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
             >
-              <div style={{ color: i === 4 ? NAVY : ORANGE, marginBottom: 12 }}><Icon /></div>
+              <div style={{ color: featured ? NAVY : ORANGE, marginBottom: 12 }}><Icon /></div>
               <h4 style={{ fontFamily: DISPLAY_FONT, color: NAVY, fontSize: "1.1rem", fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{title}</h4>
-              <p style={{ color: i === 4 ? "rgba(13,27,62,0.75)" : MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
+              <p style={{ color: featured ? "rgba(13,27,62,0.75)" : MUTED, fontSize: "1rem", lineHeight: 1.65 }}>{desc}</p>
             </div>
           ))}
         </Reveal>
