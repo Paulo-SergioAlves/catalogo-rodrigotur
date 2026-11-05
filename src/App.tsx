@@ -799,7 +799,7 @@ const SVC_BG = "var(--color-service-bg)"; /* cool-tinted white — different fro
 function ServiceItem({
   Icon, title, desc, index, isDesktop,
 }: {
-  Icon: () => JSX.Element; title: string; desc: string; index: number; isDesktop: boolean;
+  Icon: () => React.JSX.Element; title: string; desc: string; index: number; isDesktop: boolean;
 }) {
   const num = String(index + 1).padStart(2, "0");
 
