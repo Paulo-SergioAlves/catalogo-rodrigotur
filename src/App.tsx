@@ -1315,7 +1315,6 @@ function Footer() {
               <Logo width={isMobile ? 150 : 176} />
             </div>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", lineHeight: 1.7, marginBottom: 20, maxWidth: 300 }}>{CONTENT.slogan}</p>
-            <Mascot size={52} lazy />
           </div>
 
           {/* Nav */}
