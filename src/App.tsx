@@ -1008,17 +1008,60 @@ const DESTINATIONS = [
 ];
 
 function DestinationShowcase() {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(true);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const updateControls = () => {
+      setCanGoBack(carousel.scrollLeft > 2);
+      setCanGoForward(carousel.scrollLeft + carousel.clientWidth < carousel.scrollWidth - 2);
+    };
+    updateControls();
+    carousel.addEventListener("scroll", updateControls, { passive: true });
+    const observer = new ResizeObserver(updateControls);
+    observer.observe(carousel);
+    return () => {
+      carousel.removeEventListener("scroll", updateControls);
+      observer.disconnect();
+    };
+  }, []);
+
+  const moveCarousel = (direction: -1 | 1) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const cards = Array.from(carousel.children) as HTMLElement[];
+    const currentPosition = carousel.scrollLeft;
+    const positions = cards.map(card => card.offsetLeft - cards[0].offsetLeft);
+    const target = direction === 1
+      ? positions.find(position => position > currentPosition + 2)
+      : [...positions].reverse().find(position => position < currentPosition - 2);
+    if (target !== undefined) {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      carousel.scrollTo({ left: target, behavior: reducedMotion ? "auto" : "smooth" });
+    }
+  };
+
   return (
     <div id="destinos" className="destination-showcase">
-      <Reveal style={{ maxWidth: 720, marginBottom: 24 }}>
-        <p className="destination-eyebrow">Destinos no site oficial</p>
-        <h3 className="destination-heading">Inspire-se para sua próxima viagem</h3>
-        <p className="destination-intro">
-          Exemplos de destinos encontrados na plataforma da RodrigoTur. Esta vitrine não mostra ofertas em tempo real;
-          consulte preços e disponibilidade no site oficial ou converse com a agência.
-        </p>
+      <Reveal className="destination-header">
+        <div className="destination-header-copy">
+          <p className="destination-eyebrow">Destinos no site oficial</p>
+          <h3 className="destination-heading">Inspire-se para sua próxima viagem</h3>
+          <p className="destination-intro">
+            Exemplos de destinos encontrados na plataforma da RodrigoTur. Esta vitrine não mostra ofertas em tempo real;
+            consulte preços e disponibilidade no site oficial ou converse com a agência.
+          </p>
+        </div>
+        <div className="destination-controls" aria-label="Navegação dos destinos">
+          <button type="button" className="destination-arrow" aria-label="Ver destinos anteriores" disabled={!canGoBack} onClick={() => moveCarousel(-1)}>‹</button>
+          <button type="button" className="destination-arrow" aria-label="Ver próximos destinos" disabled={!canGoForward} onClick={() => moveCarousel(1)}>›</button>
+        </div>
       </Reveal>
-      <Reveal delay={80} className="destination-grid">
+      <Reveal delay={80}>
+        <div ref={carouselRef} className="destination-carousel" role="region" aria-label="Destinos para explorar" tabIndex={0}>
         {DESTINATIONS.map(destination => (
           <article key={destination.name} className="destination-card">
             <img
@@ -1045,6 +1088,7 @@ function DestinationShowcase() {
             </div>
           </article>
         ))}
+        </div>
       </Reveal>
     </div>
   );
