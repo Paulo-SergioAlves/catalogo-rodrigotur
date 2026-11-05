@@ -19,7 +19,11 @@ const DISPLAY_FONT = "var(--font-display)";
 const BODY_FONT = "var(--font-sans)";
 
 /* ─── Images ─────────────────────────────────────────────── */
-const IMG_HERO    = "https://images.unsplash.com/photo-1606768666853-403c90a981ad?w=1800&h=900&fit=crop&auto=format";
+const IMG_HERO_BASE = "https://images.unsplash.com/photo-1606768666853-403c90a981ad";
+const IMG_HERO = `${IMG_HERO_BASE}?w=1800&h=900&fit=crop&auto=format`;
+const IMG_HERO_SRCSET = [640, 960, 1280, 1800]
+  .map(width => `${IMG_HERO_BASE}?w=${width}&h=${width / 2}&fit=crop&auto=format ${width}w`)
+  .join(", ");
 const IMG_ABOUT   = "https://images.unsplash.com/photo-1687992176093-6417a93fa3d0?w=900&h=700&fit=crop&auto=format";
 const IMG_NATIONAL = "/voos-nacionais.webp";
 const IMG_INTERNATIONAL = "/voos-internacionais.webp";
@@ -606,7 +610,7 @@ function Hero() {
   return (
     <section id="inicio" style={{ background: NAVY, minHeight: isMobile ? "auto" : "100vh", position: "relative", overflow: "hidden", display: "flex", alignItems: isMobile ? "flex-start" : "center" }}>
       <div style={{ position: "absolute", inset: 0 }}>
-        <img src={IMG_HERO} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
+        <img src={IMG_HERO} srcSet={IMG_HERO_SRCSET} sizes="100vw" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, rgba(13,27,62,0.55) 0%, rgba(13,27,62,0.88) 70%, ${NAVY} 100%)` }} />
       </div>
       <FlightPath />
