@@ -1009,6 +1009,7 @@ const DESTINATIONS = [
 
 function DestinationShowcase() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(true);
 
@@ -1016,6 +1017,17 @@ function DestinationShowcase() {
     const carousel = carouselRef.current;
     if (!carousel) return;
     const updateControls = () => {
+      const cards = Array.from(carousel.children) as HTMLElement[];
+      const firstCardOffset = cards[0]?.offsetLeft ?? 0;
+      const positions = cards.map(card => card.offsetLeft - firstCardOffset);
+      const closestIndex = positions.reduce(
+        (closest, position, index) =>
+          Math.abs(position - carousel.scrollLeft) < Math.abs(positions[closest] - carousel.scrollLeft)
+            ? index
+            : closest,
+        0,
+      );
+      setActiveIndex(closestIndex);
       setCanGoBack(carousel.scrollLeft > 2);
       setCanGoForward(carousel.scrollLeft + carousel.clientWidth < carousel.scrollWidth - 2);
     };
@@ -1056,6 +1068,9 @@ function DestinationShowcase() {
           </p>
         </div>
         <div className="destination-controls" aria-label="Navegação dos destinos">
+          <span className="destination-position" role="status" aria-live="polite" aria-atomic="true">
+            Destino {activeIndex + 1} de {DESTINATIONS.length}
+          </span>
           <button type="button" className="destination-arrow" aria-label="Ver destinos anteriores" disabled={!canGoBack} onClick={() => moveCarousel(-1)}>‹</button>
           <button type="button" className="destination-arrow" aria-label="Ver próximos destinos" disabled={!canGoForward} onClick={() => moveCarousel(1)}>›</button>
         </div>
