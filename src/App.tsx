@@ -115,6 +115,7 @@ const CONTENT = {
 /* ─── Nav ────────────────────────────────────────────────── */
 const NAV = [
   { label: "Início",        href: "#inicio" },
+  { label: "Destinos",      href: "#destinos" },
   { label: "Sobre nós",     href: "#sobre" },
   { label: "Serviços",      href: "#servicos" },
   { label: "Como funciona", href: "#como-funciona" },
@@ -961,6 +962,8 @@ function TravelOptions() {
           ))}
         </Reveal>
 
+        <DestinationShowcase />
+
         <Reveal delay={160} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, marginTop: 24 }}>
           {isMobile && (
             <p style={{ color: MUTED, fontSize: "0.95rem", lineHeight: 1.5, textAlign: "center", maxWidth: 420, margin: 0 }}>
@@ -973,6 +976,77 @@ function TravelOptions() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+/* ─── Destinations shown on the official booking site ───── */
+const DESTINATIONS = [
+  {
+    name: "João Pessoa",
+    region: "Paraíba, Brasil",
+    image: "/destinos/joao-pessoa.jpg",
+    imageAlt: "Vista aérea do litoral de João Pessoa",
+  },
+  {
+    name: "Maceió",
+    region: "Alagoas, Brasil",
+    image: "/destinos/maceio.jpg",
+    imageAlt: "Vista aérea da costa de Maceió",
+  },
+  {
+    name: "Buenos Aires",
+    region: "Argentina",
+    image: "/destinos/buenos-aires.jpg",
+    imageAlt: "Casas coloridas no bairro La Boca, em Buenos Aires",
+  },
+  {
+    name: "Roma",
+    region: "Itália",
+    image: "/destinos/roma.jpg",
+    imageAlt: "Coliseu de Roma em um dia ensolarado",
+  },
+];
+
+function DestinationShowcase() {
+  return (
+    <div id="destinos" className="destination-showcase">
+      <Reveal style={{ maxWidth: 720, marginBottom: 24 }}>
+        <p className="destination-eyebrow">Destinos no site oficial</p>
+        <h3 className="destination-heading">Inspire-se para sua próxima viagem</h3>
+        <p className="destination-intro">
+          Exemplos de destinos encontrados na plataforma da RodrigoTur. Esta vitrine não mostra ofertas em tempo real;
+          consulte preços e disponibilidade no site oficial ou converse com a agência.
+        </p>
+      </Reveal>
+      <Reveal delay={80} className="destination-grid">
+        {DESTINATIONS.map(destination => (
+          <article key={destination.name} className="destination-card">
+            <img
+              src={destination.image}
+              alt={destination.imageAlt}
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="560"
+              className="destination-image"
+            />
+            <div className="destination-body">
+              <p className="destination-region">{destination.region}</p>
+              <h4 className="destination-name">{destination.name}</h4>
+              <a
+                className="destination-cta"
+                href={whatsappLink(`Olá! Vi ${destination.name} no catálogo da RodrigoTur e gostaria de saber mais sobre uma viagem para esse destino.`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Consultar viagem para ${destination.name} pelo WhatsApp`}
+              >
+                Consultar destino <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </article>
+        ))}
+      </Reveal>
+    </div>
   );
 }
 
