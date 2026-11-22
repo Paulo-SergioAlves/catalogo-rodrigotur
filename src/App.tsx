@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { LazyMotion, MotionConfig, domAnimation, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import logoImg from "@/imports/logo-rodrigotur.png";
 import aboutImg from "@/imports/RodrigoTur-Rodrigo-logo-atual.png";
 import mascotSmImg from "@/imports/mascot-sm.webp";
@@ -326,14 +328,15 @@ function FloatingWhatsApp() {
   const [entered, setEntered] = useState(false);
   const [showMobile, setShowMobile] = useState(false);
   const isMobile = useIsMobile(NAV_BREAKPOINT);
+  const reduceMotion = useReducedMotion();
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reduceMotion) {
       setEntered(true);
       return;
     }
     const t = setTimeout(() => setEntered(true), 700);
     return () => clearTimeout(t);
-  }, []);
+  }, [reduceMotion]);
   useEffect(() => {
     if (!isMobile) return;
     const hero = document.getElementById("inicio");
@@ -345,14 +348,19 @@ function FloatingWhatsApp() {
     observer.observe(hero);
     return () => observer.disconnect();
   }, [isMobile]);
-  if (isMobile && !showMobile) return null;
+  const visible = entered && (!isMobile || showMobile);
   return (
-    <a
+    <m.a
       className="floating-whatsapp"
       href={CONTENT.whatsapp.links.general}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Fale conosco pelo WhatsApp"
+      aria-hidden={!visible}
+      tabIndex={visible ? 0 : -1}
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
+      animate={{ opacity: visible ? 1 : 0, y: visible || reduceMotion ? 0 : 16 }}
+      transition={{ duration: reduceMotion ? 0 : 0.24, ease: "easeOut" }}
       style={{
         position: "fixed",
         bottom: isMobile ? "calc(16px + env(safe-area-inset-bottom, 0px))" : 24,
@@ -373,9 +381,8 @@ function FloatingWhatsApp() {
         fontFamily: BODY_FONT,
         textDecoration: "none",
         boxShadow: "0 4px 24px rgba(249,115,22,0.45), 0 2px 8px rgba(0,0,0,0.15)",
-        opacity: entered ? 1 : 0,
-        transform: entered ? "translateY(0)" : "translateY(20px)",
-        transition: "opacity 0.4s ease, transform 0.4s ease, box-shadow 0.2s, opacity 0.2s",
+        pointerEvents: visible ? "auto" : "none",
+        transition: "box-shadow 0.2s ease",
         flexShrink: 0,
         whiteSpace: "nowrap",
       }}
@@ -386,7 +393,7 @@ function FloatingWhatsApp() {
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
       </svg>
       {!isMobile && <span>Fale conosco</span>}
-    </a>
+    </m.a>
   );
 }
 
@@ -394,6 +401,7 @@ function FloatingWhatsApp() {
 function Nav({ scrolled }: { scrolled: boolean }) {
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile(NAV_BREAKPOINT);
+  const reduceMotion = useReducedMotion();
 
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const drawerRef    = useRef<HTMLDivElement>(null);
@@ -518,13 +526,15 @@ function Nav({ scrolled }: { scrolled: boolean }) {
 
       {/* Overlay — z 299 (above floating WA button at 200) */}
       {isMobile && (
-        <div
+        <m.div
           aria-hidden="true"
+          initial={false}
+          animate={{ opacity: open ? 1 : 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.2 }}
           style={{
             position: "fixed", inset: 0, zIndex: 299,
             background: "rgba(7,18,38,0.55)", backdropFilter: "blur(3px)",
-            opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none",
-            transition: "opacity .25s",
+            pointerEvents: open ? "auto" : "none",
           }}
           onClick={() => closeDrawer()}
         />
@@ -532,13 +542,16 @@ function Nav({ scrolled }: { scrolled: boolean }) {
 
       {/* Drawer — z 300, always in DOM but inert when closed */}
       {isMobile && (
-        <div
+        <m.div
           ref={drawerRef}
           id="nav-drawer"
           role="dialog"
           aria-modal="true"
           aria-label="Menu de navegação"
           className="nav-drawer"
+          initial={false}
+          animate={{ x: open ? "0%" : "105%" }}
+          transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 360, damping: 38 }}
           style={{
             position: "fixed", top: navTop, right: 0, bottom: 0, zIndex: 300,
             width: "min(320px, 88vw)",
@@ -546,8 +559,6 @@ function Nav({ scrolled }: { scrolled: boolean }) {
             borderLeft: "1px solid rgba(255,255,255,0.08)",
             display: "flex", flexDirection: "column",
             padding: "8px 0 32px",
-            transform: open ? "translateX(0)" : "translateX(105%)",
-            transition: "transform .3s cubic-bezier(.4,0,.2,1)",
             overflowY: "auto",
             boxShadow: "-12px 0 48px rgba(0,0,0,0.4)",
           }}
@@ -594,7 +605,7 @@ function Nav({ scrolled }: { scrolled: boolean }) {
               <WhatsAppIcon />Falar no WhatsApp
             </a>
           </div>
-        </div>
+        </m.div>
       )}
     </>
   );
@@ -1445,19 +1456,23 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ fontFamily: BODY_FONT, overflowX: "hidden" }}>
-      <FloatingWhatsApp />
-      <Nav scrolled={scrolled} />
-      <Hero />
-      <TravelOptions />
-      <About />
-      <Historia />
-      <Services />
-      <HowItWorks />
-      <Differentials />
-      <Tips />
-      <Contact />
-      <Footer />
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        <div style={{ fontFamily: BODY_FONT, overflowX: "hidden" }}>
+          <FloatingWhatsApp />
+          <Nav scrolled={scrolled} />
+          <Hero />
+          <TravelOptions />
+          <About />
+          <Historia />
+          <Services />
+          <HowItWorks />
+          <Differentials />
+          <Tips />
+          <Contact />
+          <Footer />
+        </div>
+      </MotionConfig>
+    </LazyMotion>
   );
 }
