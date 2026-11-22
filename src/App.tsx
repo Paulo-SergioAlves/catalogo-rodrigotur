@@ -486,8 +486,24 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           gap: 12,
         }}>
           {/* Brand */}
-          <a href="#inicio" aria-label="RodrigoTur — Início" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0 }}>
-            <Logo width={isMobile ? 86 : 98} />
+          <a href="#inicio" aria-label="RodrigoTur — Início" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: 0, position: "relative" }}>
+            <m.span
+              initial={reduceMotion ? false : { opacity: 0.2, x: -24, scale: 0.88, rotate: -3 }}
+              animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+              transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 230, damping: 19, mass: 0.8 }}
+              style={{ display: "block", transformOrigin: "left center" }}
+            >
+              <Logo width={isMobile ? 86 : 98} />
+            </m.span>
+            {!reduceMotion && (
+              <m.span
+                aria-hidden="true"
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: [0, 1, 1], opacity: [0, 0.8, 0] }}
+                transition={{ duration: 0.8, times: [0, 0.5, 1], ease: "easeOut" }}
+                style={{ position: "absolute", bottom: -3, left: 0, width: "100%", height: 2, borderRadius: 2, background: ORANGE, transformOrigin: "left center", pointerEvents: "none" }}
+              />
+            )}
           </a>
 
           {/* Desktop nav */}
