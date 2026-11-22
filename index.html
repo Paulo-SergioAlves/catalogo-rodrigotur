@@ -5,6 +5,79 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catálogo RodrigoTur | Agência de Viagens</title>
+    <link rel="preload" as="image" href="/src/imports/logo-rodrigotur.png" />
+
+    <style>
+      #boot-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: #0d1b3e;
+        color: #fff;
+        text-align: center;
+        touch-action: none;
+        transition: opacity 280ms ease, visibility 280ms ease;
+      }
+      #boot-splash.is-exiting {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .boot-splash__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: min(100%, 320px);
+      }
+      .boot-splash__logo {
+        display: block;
+        width: min(72vw, 280px);
+        height: auto;
+        animation: boot-logo-enter 700ms cubic-bezier(.2,.8,.2,1) both;
+      }
+      .boot-splash__track {
+        width: min(54vw, 210px);
+        height: 3px;
+        margin-top: 28px;
+        overflow: hidden;
+        border-radius: 99px;
+        background: rgba(255,255,255,.18);
+      }
+      .boot-splash__bar {
+        display: block;
+        width: 42%;
+        height: 100%;
+        border-radius: inherit;
+        background: #f97316;
+        animation: boot-bar-move 1s ease-in-out infinite;
+      }
+      .boot-splash__retry {
+        margin-top: 28px;
+        font: 500 14px/1.5 system-ui, sans-serif;
+        opacity: 0;
+        visibility: hidden;
+        animation: boot-retry-show 1ms 4s forwards;
+      }
+      .boot-splash__retry a { color: #fb923c; }
+      @keyframes boot-logo-enter {
+        from { opacity: 0; transform: translateY(14px) scale(.94); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      @keyframes boot-bar-move {
+        from { transform: translateX(-110%); }
+        to { transform: translateX(250%); }
+      }
+      @keyframes boot-retry-show {
+        to { opacity: 1; visibility: visible; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot-splash { transition: none; }
+        .boot-splash__logo, .boot-splash__bar { animation: none; }
+        .boot-splash__bar { width: 100%; }
+      }
+    </style>
 
     <!-- Open Graph — campos que o plugin site.json NÃO injeta automaticamente -->
     <meta property="og:type"      content="website" />
@@ -25,7 +98,15 @@
   </head>
   <body>
     <!-- figma:body-start -->
-    <div id="root"></div>
+    <div id="boot-splash" role="status" aria-label="Abrindo o catálogo da RodrigoTur">
+      <div class="boot-splash__content">
+        <img class="boot-splash__logo" src="/src/imports/logo-rodrigotur.png" alt="" width="280" height="177" />
+        <div class="boot-splash__track" aria-hidden="true"><span class="boot-splash__bar"></span></div>
+        <p class="boot-splash__retry">Demorando para abrir? <a href="/">Tente novamente</a>.</p>
+        <noscript>Ative o JavaScript para abrir o catálogo.</noscript>
+      </div>
+    </div>
+    <div id="root" inert></div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- figma:body-end -->
   </body>
