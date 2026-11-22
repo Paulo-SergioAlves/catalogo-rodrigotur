@@ -616,28 +616,26 @@ function Hero() {
       </div>
       <FlightPath />
 
-      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "84px 20px 32px" : "120px 24px 80px", width: "100%" }}>
+      <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: isMobile ? "88px 20px 24px" : "120px 24px 80px", width: "100%" }}>
 
         {/* ── Mobile: single column, top-aligned ── */}
         {isMobile && (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "stretch", textAlign: "left" }}>
-            {/* Badge */}
-            <div style={{ display: "inline-flex", alignSelf: "flex-start", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.14)", border: "1px solid rgba(249,115,22,0.35)", borderRadius: 999, padding: "5px 12px", marginBottom: 14 }}>
-              <PlaneIcon />
-              <span style={{ color: ORANGE, fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em" }}>Passagens Aéreas · Queimadas/PB</span>
-            </div>
+            <p style={{ color: ORANGE, fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", lineHeight: 1.4, marginBottom: 12 }}>
+              Agência de viagens · Queimadas/PB
+            </p>
 
             <h1 style={{ fontFamily: DISPLAY_FONT, color: "white", fontSize: "clamp(1.9rem, 8vw, 2.5rem)", lineHeight: 1.16, fontWeight: 600, marginBottom: 12 }}>
               Viaje com confiança,{" "}
               <em style={{ color: ORANGE, fontStyle: "italic" }}>vá de RodrigoTur!</em>
             </h1>
 
-            <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "1rem", lineHeight: 1.5, marginBottom: 20 }}>
+            <p style={{ color: "rgba(255,255,255,0.78)", fontSize: "1rem", lineHeight: 1.5, marginBottom: 16 }}>
               Passagens aéreas nacionais e internacionais com atendimento humano.
             </p>
 
             <Btn href={CONTENT.whatsapp.links.quote} variant="primary" block>
-              <WhatsAppIcon />Falar no WhatsApp
+              <WhatsAppIcon />Pedir cotação no WhatsApp
             </Btn>
             <Btn href="#opcoes" variant="secondary" block small extraStyle={{ marginTop: 8, background: "transparent", border: "none", boxShadow: "none", textDecoration: "underline", textUnderlineOffset: 4 }}>
               Ver opções de viagem
